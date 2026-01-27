@@ -1,0 +1,29 @@
+#previewContainer {
+    color: #e5e5e5 !important;
+}
+
+#previewContainer h1, 
+#previewContainer h2, 
+#previewContainer h3, 
+#previewContainer h4, 
+#previewContainer strong,
+#previewContainer b {
+    color: #ffffff !important;
+}
+
+#previewContainer a {
+    color: #58a6ff !important;
+}
+
+#previewContainer code {
+    color: #ff7b72 !important;
+}
+
+#previewContainer pre {
+    background-color: #161b22 !important;
+}
+
+#previewContainer blockquote {
+    border-left-color: #333 !important;
+    color: #a3a3a3 !important;
+}

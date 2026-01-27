@@ -1,0 +1,12 @@
+.editor-font {
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+}
+
+textarea {
+    caret-color: #007acc; 
+}
+
+textarea:focus {
+    outline: none;
+}

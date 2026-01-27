@@ -1,0 +1,58 @@
+import { showToast } from './ui.js';
+
+export function downloadHTML(previewElement) {
+    const content = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; color: #111; }
+    pre { background: #f4f4f4; padding: 1rem; border-radius: 0; overflow-x: auto; }
+    blockquote { border-left: 4px solid #000; margin: 0; padding-left: 1rem; color: #555; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+</style>
+</head>
+<body>
+${previewElement.innerHTML}
+</body>
+</html>`;
+    downloadFile('document.html', content, 'text/html');
+}
+
+export function downloadMarkdown(editor) {
+    downloadFile('document.md', editor.value, 'text/markdown');
+}
+
+function downloadFile(filename, content, type) {
+    const blob = new Blob([content], { type: type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast(`Exported: ${filename}`);
+}
+
+export function copyToClipboard(previewElement) {
+    const content = previewElement.innerHTML;
+    const textarea = document.createElement('textarea');
+    textarea.value = content;
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        showToast("HTML copied to clipboard");
+    } catch (err) {
+        console.error('Copy failed', err);
+        showToast("Copy failed: Permission denied");
+    }
+    
+    document.body.removeChild(textarea);
+}

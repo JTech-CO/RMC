@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R.M.C. - Real-time Markdown Converter</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'ide-bg': '#000000',
+                        'ide-panel': '#0a0a0a',
+                        'ide-border': '#333333',
+                        'ide-accent': '#007acc',
+                        'ide-text': '#ffffff',
+                        'ide-text-muted': '#cccccc',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    typography: (theme) => ({
+                        DEFAULT: {
+                            css: {
+                                color: '#e5e5e5',
+                                maxWidth: 'none',
+                                '--tw-prose-body': '#e5e5e5',
+                                '--tw-prose-headings': '#ffffff',
+                                '--tw-prose-lead': '#e5e5e5',
+                                '--tw-prose-links': '#58a6ff',
+                                '--tw-prose-bold': '#ffffff',
+                                '--tw-prose-counters': '#e5e5e5',
+                                '--tw-prose-bullets': '#e5e5e5',
+                                '--tw-prose-hr': '#30363d',
+                                '--tw-prose-quotes': '#e5e5e5',
+                                '--tw-prose-quote-borders': '#30363d',
+                                '--tw-prose-captions': '#8b949e',
+                                '--tw-prose-code': '#ffffff',
+                                '--tw-prose-pre-code': '#e5e5e5',
+                                '--tw-prose-pre-bg': '#161b22',
+                                '--tw-prose-th-borders': '#30363d',
+                                '--tw-prose-td-borders': '#30363d',
+                                code: {
+                                    backgroundColor: '#1f2937',
+                                    padding: '0.2em 0.4em',
+                                    borderRadius: '0',
+                                    fontWeight: '500',
+                                    color: '#ff7b72',
+                                },
+                                'code::before': { content: '""' },
+                                'code::after': { content: '""' },
+                                blockquote: {
+                                    borderLeftWidth: '0.25rem',
+                                    borderLeftColor: '#333333',
+                                    fontStyle: 'normal',
+                                },
+                            },
+                        },
+                    }),
+                },
+            },
+            plugins: [
+                function({ addBase, theme }) {
+                    addBase({
+                        'h1': { fontSize: theme('fontSize.2xl'), fontWeight: '700' },
+                        'h2': { fontSize: theme('fontSize.xl'), fontWeight: '600' },
+                        'h3': { fontSize: theme('fontSize.lg'), fontWeight: '600' },
+                    })
+                }
+            ],
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/hardcore.min.css" id="hljs-theme">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/scrollbar.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/preview.css">
+</head>
+<body class="h-screen flex flex-col overflow-hidden bg-ide-bg text-ide-text">
+    <header class="h-10 flex-none flex items-center justify-between px-3 bg-[#111] border-b border-ide-border select-none">
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 text-ide-accent">
+                <i class="fas fa-terminal text-sm"></i>
+                <span class="text-sm font-bold tracking-wider font-mono">R.M.C.</span>
+            </div>
+            <div class="hidden md:flex ml-4 gap-4 text-xs text-gray-400 font-mono">
+                <span class="hover:text-white cursor-pointer">File</span>
+                <span class="hover:text-white cursor-pointer">Edit</span>
+                <span class="hover:text-white cursor-pointer">View</span>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <div class="flex items-center text-gray-400">
+                <button onclick="downloadHTML()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="HTML 다운로드">
+                    <i class="fas fa-file-code"></i>
+                    <span class="hidden md:inline text-xs">Export HTML</span>
+                </button>
+                <button onclick="downloadMarkdown()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="Markdown 다운로드">
+                    <i class="fas fa-file-download"></i>
+                    <span class="hidden md:inline text-xs">Save MD</span>
+                </button>
+                <button onclick="copyToClipboard()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="HTML 복사">
+                    <i class="fas fa-copy"></i>
+                    <span class="hidden md:inline text-xs">Copy</span>
+                </button>
+            </div>
+            
+            <a href="https://github.com" target="_blank" class="ml-3 text-gray-500 hover:text-white transition-colors">
+                <i class="fab fa-github text-lg"></i>
+            </a>
+        </div>
+    </header>
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative bg-ide-bg">
+        <section class="flex-1 flex flex-col border-b md:border-b-0 md:border-r border-ide-border min-h-[50%] md:min-h-full">
+            <div class="h-8 flex items-center justify-between px-4 bg-[#0a0a0a] border-b border-ide-border">
+                <div class="flex h-full">
+                    <div class="px-3 h-full flex items-center gap-2 bg-[#000] border-r border-t-2 border-t-ide-accent border-r-ide-border text-xs text-white font-mono">
+                        <i class="fab fa-markdown text-blue-400"></i>
+                        untitled.md
+                    </div>
+                </div>
+                <span id="saveStatus" class="text-[10px] text-green-500 font-mono hidden uppercase">
+                    <i class="fas fa-save mr-1"></i>Saved
+                </span>
+            </div>
+            <div class="flex-1 relative w-full h-full bg-[#000]">
+                <div class="absolute left-0 top-0 bottom-0 w-0 md:w-0 bg-[#0a0a0a] border-r border-ide-border text-gray-600 text-xs font-mono pt-4 text-right pr-2 select-none hidden"></div>
+                <textarea 
+                    id="editor" 
+                    class="w-full h-full p-4 resize-none bg-[#000000] text-gray-200 editor-font text-sm leading-relaxed sync-scroll border-none focus:ring-0"
+                    placeholder="// Start typing your markdown here..."
+                    spellcheck="false"
+                ></textarea>
+            </div>
+        </section>
+        <section class="flex-1 flex flex-col min-h-[50%] md:min-h-full bg-[#000]">
+            <div class="h-8 flex items-center justify-between px-0 bg-[#0a0a0a] border-b border-ide-border select-none">
+                <div class="flex h-full">
+                    <button onclick="toggleViewMode('preview')" id="btnPreview" class="px-4 h-full flex items-center gap-2 bg-[#000] border-t-2 border-t-ide-accent border-r border-ide-border text-xs text-white font-mono transition-colors">
+                        <i class="fas fa-eye text-green-400"></i> Preview
+                    </button>
+                    <button onclick="toggleViewMode('source')" id="btnSource" class="px-4 h-full flex items-center gap-2 bg-[#0a0a0a] border-t-2 border-t-transparent border-r border-ide-border text-xs text-gray-500 hover:text-gray-300 font-mono transition-colors">
+                        <i class="fas fa-code text-orange-400"></i> HTML Source
+                    </button>
+                </div>
+            </div>
+            <div id="previewContainer" class="flex-1 p-6 md:p-8 overflow-auto prose prose-invert max-w-none sync-scroll bg-[#000] text-gray-200"></div>
+            <div id="sourceContainer" class="hidden flex-1 p-0 overflow-auto bg-[#000]">
+                <pre class="m-0 p-4 text-sm font-mono whitespace-pre-wrap"><code id="sourceCode" class="language-html"></code></pre>
+            </div>
+        </section>
+    </main>
+    <footer class="h-6 bg-[#007acc] text-white flex items-center justify-between px-3 text-[10px] font-mono select-none z-10">
+        <div class="flex gap-4">
+            <span class="flex items-center gap-1"><i class="fas fa-code-branch"></i> main</span>
+            <span class="flex items-center gap-1"><i class="fas fa-check-circle"></i> Ready</span>
+        </div>
+        <div class="flex gap-4">
+            <span>Ln <span id="lineCount">1</span>, Col <span id="colCount">1</span></span>
+            <span>UTF-8</span>
+            <span>Markdown</span>
+            <span class="pl-2 border-l border-white/30"><span id="charCount">0</span> chars</span>
+        </div>
+    </footer>
+    <div id="toast" class="fixed bottom-10 right-4 transform translate-y-20 opacity-0 transition-all duration-200 bg-[#252526] border border-[#454545] text-white px-4 py-3 shadow-2xl flex items-center gap-3 min-w-[300px] z-50">
+        <div class="text-[#007acc]"><i class="fas fa-info-circle"></i></div>
+        <div class="flex-1 text-xs font-mono" id="toastMsg">Notification</div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
