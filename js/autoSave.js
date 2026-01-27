@@ -1,5 +1,5 @@
-import { saveToStorage, STORAGE_KEY } from './storage.js';
-import { AUTO_SAVE_DELAY, SAVE_STATUS_DISPLAY_TIME } from './config.js';
+import { saveToStorage } from './storage.js';
+import { AUTO_SAVE_DELAY, SAVE_STATUS_DISPLAY_TIME, STORAGE_KEY } from './config.js';
 import { updateSaveStatus } from './ui.js';
 
 let autoSaveTimer = null;
