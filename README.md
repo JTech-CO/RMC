@@ -1,6 +1,8 @@
 # Real-time Markdown Converter (R.M.C.)
 
 > **마크다운을 실시간으로 HTML로 변환하고, 미리보기·다운로드·클립보드 복사를 지원하는 웹 기반 도구**
+> 
+> **실시간 마크다운 편집기**
 
 ## 1. 소개 (Introduction)
 
