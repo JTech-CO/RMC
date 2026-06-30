@@ -16,19 +16,20 @@ const elements = {};
 const appState = {
     currentHtml: '',
     viewMode: 'preview',
+    lastRenderErrorMessage: '',
 };
 
 document.addEventListener('DOMContentLoaded', initializeApp);
 
 function initializeApp() {
     cacheElements();
+    bindEvents();
 
     const savedContent = loadFromStorage();
     elements.editor.value = savedContent !== null ? savedContent : DEFAULT_MARKDOWN;
 
-    renderMarkdown();
+    renderMarkdownSafely();
     updateEditorMeta();
-    bindEvents();
 }
 
 function cacheElements() {
@@ -87,9 +88,20 @@ function bindEvents() {
 }
 
 function handleInput() {
-    renderMarkdown();
+    renderMarkdownSafely();
     updateEditorMeta();
     triggerAutoSave(elements.editor, elements.saveStatus);
+}
+
+function renderMarkdownSafely() {
+    try {
+        renderMarkdown();
+        appState.lastRenderErrorMessage = '';
+        return true;
+    } catch (error) {
+        handleRenderError(error);
+        return false;
+    }
 }
 
 function renderMarkdown() {
@@ -101,6 +113,23 @@ function renderMarkdown() {
     );
 
     appState.currentHtml = result.html;
+}
+
+function handleRenderError(error) {
+    const message = error instanceof Error ? error.message : 'Unknown render error';
+    console.error('Markdown render failed', error);
+
+    appState.currentHtml = '';
+    elements.preview.innerHTML = `<div class="m-4 border border-red-900 bg-red-950/40 p-4 text-sm text-red-100">
+        <strong>Preview unavailable</strong>
+        <p class="mt-2 text-red-200">${escapeHtml(message)}</p>
+    </div>`;
+    elements.sourceCode.textContent = `Preview unavailable\n${message}`;
+
+    if (appState.lastRenderErrorMessage !== message) {
+        showToast('Preview unavailable');
+    }
+    appState.lastRenderErrorMessage = message;
 }
 
 function updateEditorMeta() {
@@ -128,6 +157,7 @@ function handleAction(event) {
     closeMenus();
 
     if (action === 'download-html') {
+        renderMarkdownSafely();
         downloadHTML(appState.currentHtml);
         return;
     }
@@ -138,6 +168,7 @@ function handleAction(event) {
     }
 
     if (action === 'copy-html') {
+        renderMarkdownSafely();
         copyToClipboard(appState.currentHtml);
         return;
     }
@@ -239,7 +270,7 @@ function startNewDocument() {
 
     elements.editor.value = '';
     saveToStorage('');
-    renderMarkdown();
+    renderMarkdownSafely();
     updateEditorMeta();
     elements.editor.focus();
     showToast('New document ready');
@@ -255,7 +286,7 @@ function restoreBackup() {
 
     elements.editor.value = backup.content;
     saveToStorage(backup.content);
-    renderMarkdown();
+    renderMarkdownSafely();
     updateEditorMeta();
     elements.editor.focus();
     showToast('Backup restored');
@@ -304,4 +335,12 @@ function insertMarkdownAroundSelection(prefix, suffix, placeholder) {
 
     editor.focus();
     handleInput();
+}
+
+function escapeHtml(value) {
+    return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
 }

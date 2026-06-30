@@ -200,6 +200,57 @@ async function runSmokeFlow(cdp) {
         const source = document.getElementById('sourceCode');
         const sourceContainer = document.getElementById('sourceContainer');
         const dialog = document.getElementById('confirmDialog');
+        const fileMenu = document.querySelector('[data-menu-panel="file"]');
+        const editMenu = document.querySelector('[data-menu-panel="edit"]');
+        const viewMenu = document.querySelector('[data-menu-panel="view"]');
+        const toolbar = document.querySelector('body > header > div:last-child');
+        const toolbarHtmlButton = toolbar?.querySelector('[data-action="download-html"]');
+        const toolbarMarkdownButton = toolbar?.querySelector('[data-action="download-markdown"]');
+        const toolbarCopyButton = toolbar?.querySelector('[data-action="copy-html"]');
+        const githubLink = toolbar?.querySelector('a');
+        const downloadClicks = [];
+        const objectUrls = [];
+        let copiedHtml = '';
+
+        const originalAnchorClick = HTMLAnchorElement.prototype.click;
+        const originalCreateObjectURL = URL.createObjectURL;
+        const originalRevokeObjectURL = URL.revokeObjectURL;
+        HTMLAnchorElement.prototype.click = function interceptDownloadClick() {
+            if (this.download) {
+                downloadClicks.push({
+                    filename: this.download,
+                    href: this.href,
+                });
+            }
+        };
+        URL.createObjectURL = (blob) => {
+            objectUrls.push({
+                size: blob.size,
+                type: blob.type,
+            });
+            return 'blob:rmc-e2e-' + objectUrls.length;
+        };
+        URL.revokeObjectURL = () => {};
+
+        try {
+            Object.defineProperty(navigator, 'clipboard', {
+                configurable: true,
+                value: {
+                    writeText: async (text) => {
+                        copiedHtml = text;
+                    },
+                },
+            });
+        } catch {
+            const originalExecCommand = document.execCommand?.bind(document);
+            document.execCommand = (command) => {
+                if (command === 'copy') {
+                    copiedHtml = document.querySelector('textarea')?.value || '';
+                    return true;
+                }
+                return originalExecCommand ? originalExecCommand(command) : false;
+            };
+        }
 
         localStorage.clear();
         editor.value = '# M5 Smoke\\n\\n<script>alert("x")</script>\\n\\n**safe**\\n\\n- first item\\n- **second item**';
@@ -208,9 +259,38 @@ async function runSmokeFlow(cdp) {
 
         assert(preview.innerHTML.includes('<strong>safe</strong>'), 'Preview did not render strong text');
         assert(!preview.querySelector('script'), 'Sanitized preview still contains script tag');
+        assert(toolbarHtmlButton && toolbarMarkdownButton && toolbarCopyButton, 'Toolbar actions were not found');
+        assert(githubLink, 'GitHub link was not found');
+
+        toolbarHtmlButton.click();
+        await wait(50);
+        assert(downloadClicks.some((download) => download.filename === 'document.html'), 'Toolbar HTML export did not trigger a download');
+        assert(objectUrls.some((blob) => blob.type === 'text/html'), 'Toolbar HTML export did not create an HTML blob');
+
+        toolbarMarkdownButton.click();
+        await wait(50);
+        assert(downloadClicks.some((download) => download.filename === 'document.md'), 'Toolbar Markdown export did not trigger a download');
+        assert(objectUrls.some((blob) => blob.type === 'text/markdown'), 'Toolbar Markdown export did not create a Markdown blob');
+
+        toolbarCopyButton.click();
+        await wait(50);
+        assert(copiedHtml.includes('<strong>safe</strong>'), 'Toolbar copy did not copy rendered HTML');
+
+        HTMLAnchorElement.prototype.click = originalAnchorClick;
+        URL.createObjectURL = originalCreateObjectURL;
+        URL.revokeObjectURL = originalRevokeObjectURL;
+
+        let githubClicked = false;
+        githubLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            githubClicked = true;
+        }, { once: true });
+        githubLink.click();
+        assert(githubClicked, 'GitHub link did not receive a click');
+        assert(githubLink.href.startsWith('https://'), 'GitHub link is missing a valid HTTPS target');
 
         document.querySelector('[data-menu-trigger="file"]').click();
-        assert(!document.querySelector('[data-menu-panel="file"]').classList.contains('hidden'), 'File menu did not open');
+        assert(!fileMenu.classList.contains('hidden'), 'File menu did not open');
 
         document.querySelector('[data-action="new-document"]').click();
         assert(!dialog.classList.contains('hidden'), 'New document confirmation did not open');
@@ -237,9 +317,21 @@ async function runSmokeFlow(cdp) {
         editor.dispatchEvent(new Event('input', { bubbles: true }));
         await wait(150);
         editor.setSelectionRange(editor.value.length, editor.value.length);
+        document.querySelector('[data-menu-trigger="edit"]').click();
+        assert(!editMenu.classList.contains('hidden'), 'Edit menu did not open');
         document.querySelector('[data-action="insert-bold"]').click();
         await wait(150);
         assert(editor.value.includes('**bold text**'), 'Bold action did not insert placeholder');
+
+        document.querySelector('[data-menu-trigger="view"]').click();
+        assert(!viewMenu.classList.contains('hidden'), 'View menu did not open');
+        viewMenu.querySelector('[data-view-mode="source"]').click();
+        await wait(150);
+        assert(!sourceContainer.classList.contains('hidden'), 'View menu did not show source view');
+
+        document.getElementById('btnPreview').click();
+        await wait(150);
+        assert(sourceContainer.classList.contains('hidden'), 'Preview tab did not hide source view');
 
         document.getElementById('btnSource').click();
         await wait(150);

@@ -9,7 +9,7 @@ export function updatePreview(markdownText, previewElement, sourceCodeElement, s
     sourceCodeElement.textContent = formattedHtml;
 
     previewElement.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightElement(block);
+        highlightCodeElement(block);
     });
 
     if (sourceViewElement && !sourceViewElement.classList.contains('hidden')) {
@@ -23,6 +23,16 @@ export function updatePreview(markdownText, previewElement, sourceCodeElement, s
 }
 
 export function highlightSourceCode(sourceCodeElement) {
-    sourceCodeElement.removeAttribute('data-highlighted');
-    hljs.highlightElement(sourceCodeElement);
+    highlightCodeElement(sourceCodeElement);
+}
+
+function highlightCodeElement(codeElement) {
+    if (!hasHighlightRuntime()) return;
+
+    codeElement.removeAttribute('data-highlighted');
+    globalThis.hljs.highlightElement(codeElement);
+}
+
+function hasHighlightRuntime() {
+    return Boolean(globalThis.hljs && typeof globalThis.hljs.highlightElement === 'function');
 }
