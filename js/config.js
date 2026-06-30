@@ -1,4 +1,4 @@
-export const DEFAULT_MARKDOWN = `# Welcome to R.M.C.
+export const DEFAULT_MARKDOWN = `# Welcome to R.M.C. (High Contrast Mode)
 
 **R.M.C.** is a real-time markdown editor designed for developers.
 This view is optimized for **focus** and **contrast**.
@@ -22,10 +22,10 @@ This view is optimized for **focus** and **contrast**.
 | 01 | Admin| Root | Active |
 | 02 | User | Dev  | Idle   |
 
-> "Simplicity is the soul of efficiency." - Austin Freeman
+> "Simplicity is the soul of efficiency." - *Austin Freeman*
 `;
 
 export const STORAGE_KEY = 'rmc_content_dark';
+export const BACKUP_STORAGE_KEY = 'rmc_content_backup';
 export const AUTO_SAVE_DELAY = 1000;
 export const SAVE_STATUS_DISPLAY_TIME = 2000;
-

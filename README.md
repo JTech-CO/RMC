@@ -1,69 +1,91 @@
 # Real-time Markdown Converter (R.M.C.)
 
-> **마크다운을 실시간으로 HTML로 변환하고, 미리보기·다운로드·클립보드 복사를 지원하는 웹 기반 도구**
-> 
-> **실시간 마크다운 편집기**
+> **마크다운을 입력하는 즉시 HTML 미리보기와 소스 코드로 변환하는 서버리스 정적 웹앱**
 
 ## 1. 소개 (Introduction)
 
-이 프로젝트는 마크다운을 실시간으로 HTML로 변환하여 미리보기하고, 완성된 HTML·마크다운을 다운로드하거나 클립보드에 복사할 수 있게 하기 위한 **클라이언트 전용 웹 애플리케이션**입니다.
-**별도 설치·서버 없이 브라우저에서 바로 사용**할 수 있으며, IDE 스타일의 고대비 UI와 LocalStorage 자동 저장을 통해 사용자에게 **즉시 활용 가능한 원스톱 생산성 도구**를 제공합니다.
+R.M.C.는 문서 작성자, 개발자, 블로거가 마크다운을 빠르게 작성하고 변환 결과를 즉시 확인할 수 있도록 만든 웹 애플리케이션입니다. 별도 백엔드 없이 브라우저에서 동작하며, 입력 내용은 로컬 저장소에 자동 저장됩니다.
 
 **주요 기능**
-- **실시간 변환**: 좌측 에디터 입력 즉시 우측 미리보기에 HTML 렌더링
-- **스크롤 동기화**: 에디터와 미리보기 패널 간 스크롤 비율 동기화
-- **내보내기**: HTML·마크다운 파일 다운로드, HTML 클립보드 복사
-- **자동 저장**: LocalStorage에 주기적 저장, 새로고침 시 내용 복구
+- **실시간 변환**: 마크다운 입력과 동시에 미리보기와 HTML Source를 갱신합니다.
+- **안전한 렌더링**: `marked`로 변환한 HTML을 `DOMPurify`로 정제해 미리보기에 반영합니다.
+- **작업 보호**: 새 문서 시작 전 확인 다이얼로그를 표시하고, 기존 내용을 백업/복구할 수 있습니다.
+- **내보내기**: HTML 파일, Markdown 파일, HTML 클립보드 복사를 지원합니다.
+- **편집 보조**: File/Edit/View 메뉴에서 굵게, 기울임, 링크, 코드 블록 삽입과 보기 전환을 제공합니다.
 
 ## 2. 기술 스택 (Tech Stack)
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla ES6+ 모듈)
-- **UI**: Tailwind CSS (CDN), Font Awesome, Google Fonts (Noto Sans KR, JetBrains Mono)
-- **Markdown**: [marked.js](https://marked.js.org/) (GFM, 테이블 등 지원)
-- **보안**: [DOMPurify](https://github.com/cure53/DOMPurify) (HTML Sanitization, XSS 방지)
-- **코드 하이라이트**: [Highlight.js](https://highlightjs.org/)
-- **Deployment**: GitHub Pages 등 정적 호스팅 (추가 빌드 불필요)
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES Modules)
+- **UI**: Tailwind CSS CDN, Font Awesome, Google Fonts
+- **Markdown**: marked 9.1.2
+- **Security**: DOMPurify 3.0.6
+- **Code Highlighting**: Highlight.js 11.9.0
+- **State Management**: LocalStorage
+- **Testing**: Node.js 기반 정적 검사, Chrome DevTools Protocol 기반 E2E 스모크 테스트
+- **Deployment**: GitHub Pages 또는 정적 호스팅
 
 ## 3. 설치 및 실행 (Quick Start)
 
-**요구 사항**: 최신 브라우저 (Chrome, Firefox, Safari, Edge 등). Node.js 불필요.
+**요구 사항**: Node.js 18 이상 권장
 
-1. **저장소 클론**
+1. **설치 (Install)**
    ```bash
-   git clone https://github.com/[사용자명]/[레포지토리명].git
-   cd [레포지토리명]
+   git clone [레포지토리 URL]
+   cd Real-time-Markdown-Converter
+   npm install
    ```
 
-2. **실행 (Run)**
-   - **로컬**: `index.html`을 브라우저에서 직접 열기  
-   - **로컬 서버** (선택): `npx serve .` 등으로 루트에서 서빙 후 접속  
-   - **GitHub Pages**: 레포 설정 → Pages → Source를 해당 브랜치/폴더로 지정 후 배포 [실행하기](<https://jtech-co.github.io/RMC/index.html>)
+2. **환경 변수 (Environment)**
+   별도 `.env` 파일은 필요하지 않습니다.  
+   Chrome 또는 Edge가 기본 위치에 없으면 E2E 검증 시 `RMC_CHROME_PATH`를 지정할 수 있습니다.
 
-3. **환경 변수**
-   - 사용하지 않음. CDN 기반으로 동작합니다.
+   ```bash
+   # 예시
+   RMC_CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
+   ```
+
+3. **실행 (Run)**
+   ```bash
+   npm run dev
+   ```
+
+4. **검증 (Check)**
+   ```bash
+   npm run check
+   npm run check:e2e
+   npm run check:all
+   ```
+
+   Windows PowerShell에서 `npm.ps1` 실행 정책 오류가 발생하면 `npm.cmd run check:all`처럼 `npm.cmd`를 사용합니다.
 
 ## 4. 폴더 구조 (Structure)
 
 ```text
 .
-├── index.html          # 진입점 (Tailwind, 외부 라이브러리, 메인 로직 로드)
-├── css/
-│   ├── styles.css      # 공통 스타일 (body, selection 등)
-│   ├── scrollbar.css   # 스크롤바
-│   ├── editor.css      # 에디터 영역
-│   └── preview.css     # 미리보기 패널
-└── js/
-    ├── main.js         # 초기화 및 이벤트 핸들러
-    ├── config.js       # 상수·설정 (기본 마크다운, 저장 키 등)
-    ├── storage.js      # LocalStorage 읽기/쓰기
-    ├── editor.js       # 글자 수·커서 위치 등 에디터 유틸
-    ├── preview.js      # 마크다운 → HTML 변환·렌더링
-    ├── scrollSync.js   # 에디터–미리보기 스크롤 동기화
-    ├── autoSave.js     # 자동 저장
-    ├── export.js       # HTML/MD 다운로드·클립보드 복사
-    └── ui.js           # 뷰 모드 토글·토스트 등 UI
+├── index.html              # 앱 진입점
+├── css/                    # 화면 스타일
+├── js/
+│   ├── main.js             # 앱 상태와 이벤트 연결
+│   ├── markdown.js         # 마크다운 변환 및 sanitize 경계
+│   ├── preview.js          # 미리보기와 HTML Source 렌더링
+│   ├── sourceFormatter.js  # HTML Source 줄바꿈/들여쓰기 포맷터
+│   ├── export.js           # HTML/Markdown/클립보드 내보내기
+│   ├── storage.js          # LocalStorage 저장/백업/복구
+│   ├── autoSave.js         # 자동 저장
+│   ├── scrollSync.js       # 에디터/미리보기 스크롤 동기화
+│   ├── editor.js           # 글자 수와 커서 위치 계산
+│   ├── ui.js               # 탭, 토스트, 저장 상태 UI
+│   └── config.js           # 기본 문서와 상수
+├── scripts/
+│   ├── check.js            # 정적 프로젝트 검증
+│   └── e2e-smoke.js        # Headless 브라우저 스모크 테스트
+├── docs/
+│   └── deployment.md       # 배포 및 의존성 메모
+├── package.json
+└── package-lock.json
 ```
 
 ## 5. 정보 (Info)
 
+- **Version**: 1.1.0
 - **License**: MIT

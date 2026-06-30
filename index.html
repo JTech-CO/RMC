@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R.M.C. - Real-time Markdown Converter</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -74,7 +74,6 @@
             ],
         }
     </script>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -93,29 +92,99 @@
                 <i class="fas fa-terminal text-sm"></i>
                 <span class="text-sm font-bold tracking-wider font-mono">R.M.C.</span>
             </div>
-            <div class="hidden md:flex ml-4 gap-4 text-xs text-gray-400 font-mono">
-                <span class="hover:text-white cursor-pointer">File</span>
-                <span class="hover:text-white cursor-pointer">Edit</span>
-                <span class="hover:text-white cursor-pointer">View</span>
-            </div>
+            <nav class="flex ml-2 gap-1 text-xs text-gray-400 font-mono" role="menubar" aria-label="Application menu">
+                <div class="relative">
+                    <button type="button" data-menu-trigger="file" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
+                        File
+                    </button>
+                    <div data-menu-panel="file" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
+                        <button type="button" data-action="new-document" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-file w-4 text-gray-500"></i>
+                            New Document
+                        </button>
+                        <button type="button" data-action="download-markdown" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-file-download w-4 text-blue-400"></i>
+                            Save Markdown
+                        </button>
+                        <button type="button" data-action="download-html" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-file-code w-4 text-green-400"></i>
+                            Export HTML
+                        </button>
+                        <button type="button" data-action="restore-backup" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-clock-rotate-left w-4 text-yellow-400"></i>
+                            Restore Backup
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button type="button" data-menu-trigger="edit" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
+                        Edit
+                    </button>
+                    <div data-menu-panel="edit" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
+                        <button type="button" data-action="insert-bold" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-bold w-4 text-gray-500"></i>
+                            Bold
+                        </button>
+                        <button type="button" data-action="insert-italic" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-italic w-4 text-gray-500"></i>
+                            Italic
+                        </button>
+                        <button type="button" data-action="insert-link" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-link w-4 text-gray-500"></i>
+                            Link
+                        </button>
+                        <button type="button" data-action="insert-code-block" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-code w-4 text-orange-400"></i>
+                            Code Block
+                        </button>
+                        <button type="button" data-action="copy-html" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-copy w-4 text-purple-400"></i>
+                            Copy HTML
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button type="button" data-menu-trigger="view" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
+                        View
+                    </button>
+                    <div data-menu-panel="view" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
+                        <button type="button" data-view-mode="preview" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-eye w-4 text-green-400"></i>
+                            Preview
+                        </button>
+                        <button type="button" data-view-mode="source" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-code w-4 text-orange-400"></i>
+                            HTML Source
+                        </button>
+                        <button type="button" data-action="focus-editor" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-pen w-4 text-blue-400"></i>
+                            Focus Editor
+                        </button>
+                        <button type="button" data-action="focus-preview" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
+                            <i class="fas fa-up-right-and-down-left-from-center w-4 text-gray-500"></i>
+                            Focus Preview
+                        </button>
+                    </div>
+                </div>
+            </nav>
         </div>
         <div class="flex items-center">
             <div class="flex items-center text-gray-400">
-                <button onclick="downloadHTML()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="HTML 다운로드">
+                <button type="button" data-action="download-html" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="HTML 다운로드">
                     <i class="fas fa-file-code"></i>
                     <span class="hidden md:inline text-xs">Export HTML</span>
                 </button>
-                <button onclick="downloadMarkdown()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="Markdown 다운로드">
+                <button type="button" data-action="download-markdown" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="Markdown 다운로드">
                     <i class="fas fa-file-download"></i>
                     <span class="hidden md:inline text-xs">Save MD</span>
                 </button>
-                <button onclick="copyToClipboard()" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="HTML 복사">
+                <button type="button" data-action="copy-html" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="HTML 복사">
                     <i class="fas fa-copy"></i>
                     <span class="hidden md:inline text-xs">Copy</span>
                 </button>
             </div>
             
-            <a href="https://jtech-co.github.io/" target="_blank" class="ml-3 text-gray-500 hover:text-white transition-colors">
+            <a href="https://jtech-co.github.io/my-website/MLP.html" target="_blank" rel="noopener noreferrer" class="ml-3 text-gray-500 hover:text-white transition-colors">
                 <i class="fab fa-github text-lg"></i>
             </a>
         </div>
@@ -146,17 +215,17 @@
         <section class="flex-1 flex flex-col min-h-[50%] md:min-h-full bg-[#000]">
             <div class="h-8 flex items-center justify-between px-0 bg-[#0a0a0a] border-b border-ide-border select-none">
                 <div class="flex h-full">
-                    <button onclick="toggleViewMode('preview')" id="btnPreview" class="px-4 h-full flex items-center gap-2 bg-[#000] border-t-2 border-t-ide-accent border-r border-ide-border text-xs text-white font-mono transition-colors">
+                    <button type="button" data-view-mode="preview" id="btnPreview" class="px-4 h-full flex items-center gap-2 bg-[#000] border-t-2 border-t-ide-accent border-r border-ide-border text-xs text-white font-mono transition-colors">
                         <i class="fas fa-eye text-green-400"></i> Preview
                     </button>
-                    <button onclick="toggleViewMode('source')" id="btnSource" class="px-4 h-full flex items-center gap-2 bg-[#0a0a0a] border-t-2 border-t-transparent border-r border-ide-border text-xs text-gray-500 hover:text-gray-300 font-mono transition-colors">
+                    <button type="button" data-view-mode="source" id="btnSource" class="px-4 h-full flex items-center gap-2 bg-[#0a0a0a] border-t-2 border-t-transparent border-r border-ide-border text-xs text-gray-500 hover:text-gray-300 font-mono transition-colors">
                         <i class="fas fa-code text-orange-400"></i> HTML Source
                     </button>
                 </div>
             </div>
-            <div id="previewContainer" class="flex-1 p-6 md:p-8 overflow-auto prose prose-invert max-w-none sync-scroll bg-[#000] text-gray-200"></div>
+            <div id="previewContainer" class="flex-1 p-6 md:p-8 overflow-auto prose prose-invert max-w-none sync-scroll bg-[#000] text-gray-200" tabindex="0"></div>
             <div id="sourceContainer" class="hidden flex-1 p-0 overflow-auto bg-[#000]">
-                <pre class="m-0 p-4 text-sm font-mono whitespace-pre-wrap"><code id="sourceCode" class="language-html"></code></pre>
+                <pre class="m-0 p-4 text-sm font-mono whitespace-pre"><code id="sourceCode" class="language-html"></code></pre>
             </div>
         </section>
     </main>
@@ -176,7 +245,24 @@
         <div class="text-[#007acc]"><i class="fas fa-info-circle"></i></div>
         <div class="flex-1 text-xs font-mono" id="toastMsg">Notification</div>
     </div>
+    <div id="confirmDialog" class="hidden fixed inset-0 z-[60] items-center justify-center bg-black/70 px-4" role="dialog" aria-modal="true" aria-labelledby="confirmDialogTitle">
+        <div class="w-full max-w-sm border border-[#454545] bg-[#1b1b1b] shadow-2xl">
+            <div class="border-b border-ide-border px-4 py-3">
+                <h2 id="confirmDialogTitle" class="text-sm font-semibold text-white">Start a new document?</h2>
+            </div>
+            <div class="px-4 py-4 text-sm text-gray-300">
+                Current content will be backed up before the editor is cleared.
+            </div>
+            <div class="flex justify-end gap-2 border-t border-ide-border px-4 py-3">
+                <button type="button" data-dialog-action="cancel" class="h-8 px-3 text-xs text-gray-300 hover:bg-[#333] hover:text-white">
+                    Keep Editing
+                </button>
+                <button type="button" data-dialog-action="confirm-new-document" class="h-8 px-3 bg-[#007acc] text-xs text-white hover:bg-[#0b8fe8]">
+                    Start New
+                </button>
+            </div>
+        </div>
+    </div>
     <script type="module" src="js/main.js"></script>
 </body>
-
 </html>
