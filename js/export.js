@@ -40,21 +40,21 @@ function downloadFile(filename, content, type) {
     showToast(`Exported: ${filename}`);
 }
 
-export async function copyToClipboard(htmlContent) {
-    const content = htmlContent ?? '';
+export async function copyToClipboard(content, successMessage = 'Copied to clipboard') {
+    const copyContent = content ?? '';
     
     if (navigator.clipboard && window.isSecureContext) {
         try {
-            await navigator.clipboard.writeText(content);
-            showToast("HTML copied to clipboard");
-            return;
+            await navigator.clipboard.writeText(copyContent);
+            showToast(successMessage);
+            return true;
         } catch (err) {
             console.warn('Clipboard API failed, falling back to textarea copy.', err);
         }
     }
 
     const textarea = document.createElement('textarea');
-    textarea.value = content;
+    textarea.value = copyContent;
     textarea.setAttribute('readonly', '');
     textarea.style.position = 'fixed';
     textarea.style.top = '-9999px';
@@ -63,11 +63,13 @@ export async function copyToClipboard(htmlContent) {
     
     try {
         document.execCommand('copy');
-        showToast("HTML copied to clipboard");
+        showToast(successMessage);
+        return true;
     } catch (err) {
         console.error('Copy failed', err);
         showToast("Copy failed: Permission denied");
+        return false;
+    } finally {
+        document.body.removeChild(textarea);
     }
-    
-    document.body.removeChild(textarea);
 }

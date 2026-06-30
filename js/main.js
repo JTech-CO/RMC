@@ -8,16 +8,22 @@ import {
 import { updatePreview } from './preview.js';
 import { updateCounts, updateCursorPos } from './editor.js';
 import { handleEditorScroll, handlePreviewScroll } from './scrollSync.js';
-import { triggerAutoSave } from './autoSave.js';
+import { cancelAutoSave, triggerAutoSave } from './autoSave.js';
 import { showToast, toggleViewMode } from './ui.js';
 import { downloadHTML, downloadMarkdown, copyToClipboard } from './export.js';
+
+const JTECH_HOME_URL = 'https://jtech-co.github.io/';
+const JTECH_REDIRECT_DELAY_MS = 2000;
+const ACTION_FEEDBACK_DURATION_MS = 900;
 
 const elements = {};
 const appState = {
     currentHtml: '',
     viewMode: 'preview',
     lastRenderErrorMessage: '',
+    redirectTimerId: null,
 };
+const actionFeedbackTimers = new WeakMap();
 
 document.addEventListener('DOMContentLoaded', initializeApp);
 
@@ -152,24 +158,43 @@ function setViewMode(mode) {
     closeMenus();
 }
 
-function handleAction(event) {
+async function handleAction(event) {
+    event.preventDefault();
+
+    const control = event.currentTarget;
     const action = event.currentTarget.dataset.action;
     closeMenus();
 
     if (action === 'download-html') {
         renderMarkdownSafely();
         downloadHTML(appState.currentHtml);
+        flashActionFeedback(control);
         return;
     }
 
     if (action === 'download-markdown') {
         downloadMarkdown(elements.editor.value);
+        flashActionFeedback(control);
         return;
     }
 
     if (action === 'copy-html') {
         renderMarkdownSafely();
-        copyToClipboard(appState.currentHtml);
+        if (await copyToClipboard(appState.currentHtml, 'HTML copied to clipboard')) {
+            flashActionFeedback(control, 'Copied!');
+        }
+        return;
+    }
+
+    if (action === 'copy-markdown') {
+        if (await copyToClipboard(elements.editor.value, 'Markdown copied to clipboard')) {
+            flashActionFeedback(control, 'Copied!');
+        }
+        return;
+    }
+
+    if (action === 'open-jtech-home') {
+        prepareJtechRedirect(control);
         return;
     }
 
@@ -203,15 +228,111 @@ function handleAction(event) {
         return;
     }
 
-    if (action === 'focus-editor') {
-        elements.editor.focus();
-        return;
+}
+
+function flashActionFeedback(control, temporaryLabel = '') {
+    const icon = control.querySelector('i');
+    const label = control.querySelector('[data-action-label]');
+
+    if (actionFeedbackTimers.has(control)) {
+        clearTimeout(actionFeedbackTimers.get(control));
     }
 
-    if (action === 'focus-preview') {
-        setViewMode('preview');
-        elements.preview.focus();
+    if (label && !control.dataset.feedbackOriginalLabel) {
+        control.dataset.feedbackOriginalLabel = label.textContent;
     }
+
+    if (icon && !control.dataset.feedbackIconWasGreen) {
+        control.dataset.feedbackIconWasGreen = String(icon.classList.contains('text-green-400'));
+    }
+
+    if (temporaryLabel && label) {
+        label.textContent = temporaryLabel;
+    }
+
+    icon?.classList.add('text-green-400');
+
+    const timerId = setTimeout(() => {
+        if (temporaryLabel && label) {
+            label.textContent = control.dataset.feedbackOriginalLabel ?? label.textContent;
+        }
+
+        if (control.dataset.feedbackIconWasGreen !== 'true') {
+            icon?.classList.remove('text-green-400');
+        }
+
+        delete control.dataset.feedbackOriginalLabel;
+        delete control.dataset.feedbackIconWasGreen;
+        actionFeedbackTimers.delete(control);
+    }, ACTION_FEEDBACK_DURATION_MS);
+
+    actionFeedbackTimers.set(control, timerId);
+}
+
+function prepareJtechRedirect(control) {
+    if (appState.redirectTimerId) {
+        clearTimeout(appState.redirectTimerId);
+    }
+
+    cancelAutoSave();
+    saveToStorage(elements.editor.value);
+
+    elements.editor.value = createJtechRedirectMarkdown();
+    renderMarkdownSafely();
+    updateEditorMeta();
+    setViewMode('preview');
+    flashActionFeedback(control);
+    showToast('JTech main page redirecting');
+
+    appState.redirectTimerId = setTimeout(() => {
+        window.location.assign(JTECH_HOME_URL);
+    }, JTECH_REDIRECT_DELAY_MS);
+}
+
+function createJtechRedirectMarkdown() {
+    const createdAt = new Date().toLocaleString('ko-KR', {
+        hour12: false,
+        timeZone: 'Asia/Seoul',
+    });
+
+    return `# JTech 메인페이지로 이동합니다
+
+> R.M.C. redirect handoff initialized. 이 화면은 로컬 저장소에 기록되지 않는 임시 안내 문서입니다.
+
+## Navigation Manifest
+
+| Field | Value |
+|---|---|
+| Destination | [https://jtech-co.github.io/](${JTECH_HOME_URL}) |
+| Method | delayed client-side navigation |
+| Countdown | 2 seconds |
+| Persistence | temporary preview only |
+| Generated At | ${createdAt} |
+
+## Redirect Pipeline
+
+- [x] Preserve current Markdown document in local storage
+- [x] Inject temporary Markdown into editor surface
+- [x] Render live preview from Markdown source
+- [ ] Transfer browser location to JTech main page
+
+\`\`\`yaml
+redirect:
+  origin: R.M.C.
+  target: ${JTECH_HOME_URL}
+  delay_ms: ${JTECH_REDIRECT_DELAY_MS}
+  storage_policy: transient-preview
+  status: pending-navigation
+\`\`\`
+
+\`\`\`http
+GET / HTTP/2
+Host: jtech-co.github.io
+Accept: text/html,application/xhtml+xml
+Purpose: JTech mainpage handoff
+\`\`\`
+
+**JTech 메인페이지로 이동합니다.**`;
 }
 
 function handleMenuTrigger(event) {

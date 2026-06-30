@@ -104,7 +104,7 @@
                         </button>
                         <button type="button" data-action="download-markdown" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
                             <i class="fas fa-file-download w-4 text-blue-400"></i>
-                            Save Markdown
+                            Export MD
                         </button>
                         <button type="button" data-action="download-html" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
                             <i class="fas fa-file-code w-4 text-green-400"></i>
@@ -156,14 +156,6 @@
                             <i class="fas fa-code w-4 text-orange-400"></i>
                             HTML Source
                         </button>
-                        <button type="button" data-action="focus-editor" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-pen w-4 text-blue-400"></i>
-                            Focus Editor
-                        </button>
-                        <button type="button" data-action="focus-preview" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-up-right-and-down-left-from-center w-4 text-gray-500"></i>
-                            Focus Preview
-                        </button>
                     </div>
                 </div>
             </nav>
@@ -172,19 +164,19 @@
             <div class="flex items-center text-gray-400">
                 <button type="button" data-action="download-html" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="HTML 다운로드">
                     <i class="fas fa-file-code"></i>
-                    <span class="hidden md:inline text-xs">Export HTML</span>
+                    <span data-action-label class="hidden md:inline text-xs">Export HTML</span>
                 </button>
                 <button type="button" data-action="download-markdown" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="Markdown 다운로드">
                     <i class="fas fa-file-download"></i>
-                    <span class="hidden md:inline text-xs">Save MD</span>
+                    <span data-action-label class="hidden md:inline text-xs">Export MD</span>
                 </button>
-                <button type="button" data-action="copy-html" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="HTML 복사">
+                <button type="button" data-action="copy-markdown" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="Markdown 복사">
                     <i class="fas fa-copy"></i>
-                    <span class="hidden md:inline text-xs">Copy</span>
+                    <span data-action-label class="hidden md:inline text-xs">Copy</span>
                 </button>
             </div>
             
-            <a href="https://jtech-co.github.io/my-website/MLP.html" target="_blank" rel="noopener noreferrer" class="ml-3 text-gray-500 hover:text-white transition-colors">
+            <a href="https://jtech-co.github.io/" data-action="open-jtech-home" class="ml-3 text-gray-500 hover:text-white transition-colors" aria-label="Open JTech home">
                 <i class="fab fa-github text-lg"></i>
             </a>
         </div>

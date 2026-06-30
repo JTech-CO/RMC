@@ -15,5 +15,13 @@ export function triggerAutoSave(editor, saveStatusElement) {
                 updateSaveStatus(saveStatusElement, false);
             }, SAVE_STATUS_DISPLAY_TIME);
         }
+        autoSaveTimer = null;
     }, AUTO_SAVE_DELAY);
+}
+
+export function cancelAutoSave() {
+    if (!autoSaveTimer) return;
+
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = null;
 }
