@@ -1,260 +1,111 @@
-<!DOCTYPE html>
-<html lang="ko" class="dark">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R.M.C. - Real-time Markdown Converter</title>
-    
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'ide-bg': '#000000',
-                        'ide-panel': '#0a0a0a',
-                        'ide-border': '#333333',
-                        'ide-accent': '#007acc',
-                        'ide-text': '#ffffff',
-                        'ide-text-muted': '#cccccc',
-                    },
-                    fontFamily: {
-                        sans: ['Noto Sans KR', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    typography: (theme) => ({
-                        DEFAULT: {
-                            css: {
-                                color: '#e5e5e5',
-                                maxWidth: 'none',
-                                '--tw-prose-body': '#e5e5e5',
-                                '--tw-prose-headings': '#ffffff',
-                                '--tw-prose-lead': '#e5e5e5',
-                                '--tw-prose-links': '#58a6ff',
-                                '--tw-prose-bold': '#ffffff',
-                                '--tw-prose-counters': '#e5e5e5',
-                                '--tw-prose-bullets': '#e5e5e5',
-                                '--tw-prose-hr': '#30363d',
-                                '--tw-prose-quotes': '#e5e5e5',
-                                '--tw-prose-quote-borders': '#30363d',
-                                '--tw-prose-captions': '#8b949e',
-                                '--tw-prose-code': '#ffffff',
-                                '--tw-prose-pre-code': '#e5e5e5',
-                                '--tw-prose-pre-bg': '#161b22',
-                                '--tw-prose-th-borders': '#30363d',
-                                '--tw-prose-td-borders': '#30363d',
-                                code: {
-                                    backgroundColor: '#1f2937',
-                                    padding: '0.2em 0.4em',
-                                    borderRadius: '0',
-                                    fontWeight: '500',
-                                    color: '#ff7b72',
-                                },
-                                'code::before': { content: '""' },
-                                'code::after': { content: '""' },
-                                blockquote: {
-                                    borderLeftWidth: '0.25rem',
-                                    borderLeftColor: '#333333',
-                                    fontStyle: 'normal',
-                                },
-                            },
-                        },
-                    }),
-                },
-            },
-            plugins: [
-                function({ addBase, theme }) {
-                    addBase({
-                        'h1': { fontSize: theme('fontSize.2xl'), fontWeight: '700' },
-                        'h2': { fontSize: theme('fontSize.xl'), fontWeight: '600' },
-                        'h3': { fontSize: theme('fontSize.lg'), fontWeight: '600' },
-                    })
-                }
-            ],
-        }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/hardcore.min.css" id="hljs-theme">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/scrollbar.css">
-    <link rel="stylesheet" href="css/editor.css">
-    <link rel="stylesheet" href="css/preview.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="R.M.C.">
+  <meta name="theme-color" content="#090c10">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>R.M.C. | Real-time Markdown Converter</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/editor.css">
+  <link rel="stylesheet" href="css/document.css">
+  <link rel="stylesheet" href="css/preview.css">
+  <script type="module" src="js/main.js"></script>
 </head>
-<body class="h-screen flex flex-col overflow-hidden bg-ide-bg text-ide-text">
-    <header class="h-10 flex-none flex items-center justify-between px-3 bg-[#111] border-b border-ide-border select-none">
-        <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 text-ide-accent">
-                <i class="fas fa-terminal text-sm"></i>
-                <span class="text-sm font-bold tracking-wider font-mono">R.M.C.</span>
-            </div>
-            <nav class="flex ml-2 gap-1 text-xs text-gray-400 font-mono" role="menubar" aria-label="Application menu">
-                <div class="relative">
-                    <button type="button" data-menu-trigger="file" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
-                        File
-                    </button>
-                    <div data-menu-panel="file" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
-                        <button type="button" data-action="new-document" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-file w-4 text-gray-500"></i>
-                            New Document
-                        </button>
-                        <button type="button" data-action="download-markdown" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-file-download w-4 text-blue-400"></i>
-                            Export MD
-                        </button>
-                        <button type="button" data-action="download-html" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-file-code w-4 text-green-400"></i>
-                            Export HTML
-                        </button>
-                        <button type="button" data-action="restore-backup" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-clock-rotate-left w-4 text-yellow-400"></i>
-                            Restore Backup
-                        </button>
-                    </div>
-                </div>
-                <div class="relative">
-                    <button type="button" data-menu-trigger="edit" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
-                        Edit
-                    </button>
-                    <div data-menu-panel="edit" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
-                        <button type="button" data-action="insert-bold" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-bold w-4 text-gray-500"></i>
-                            Bold
-                        </button>
-                        <button type="button" data-action="insert-italic" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-italic w-4 text-gray-500"></i>
-                            Italic
-                        </button>
-                        <button type="button" data-action="insert-link" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-link w-4 text-gray-500"></i>
-                            Link
-                        </button>
-                        <button type="button" data-action="insert-code-block" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-code w-4 text-orange-400"></i>
-                            Code Block
-                        </button>
-                        <button type="button" data-action="copy-html" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-copy w-4 text-purple-400"></i>
-                            Copy HTML
-                        </button>
-                    </div>
-                </div>
-                <div class="relative">
-                    <button type="button" data-menu-trigger="view" class="h-8 px-2 hover:bg-[#333] hover:text-white transition-colors" aria-haspopup="menu" aria-expanded="false">
-                        View
-                    </button>
-                    <div data-menu-panel="view" class="hidden absolute left-0 top-full mt-1 w-48 py-1 bg-[#1b1b1b] border border-ide-border shadow-2xl z-50" role="menu">
-                        <button type="button" data-view-mode="preview" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-eye w-4 text-green-400"></i>
-                            Preview
-                        </button>
-                        <button type="button" data-view-mode="source" class="w-full h-8 px-3 flex items-center gap-2 text-left text-gray-300 hover:bg-[#333] hover:text-white" role="menuitem">
-                            <i class="fas fa-code w-4 text-orange-400"></i>
-                            HTML Source
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <div class="flex items-center">
-            <div class="flex items-center text-gray-400">
-                <button type="button" data-action="download-html" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="HTML 다운로드">
-                    <i class="fas fa-file-code"></i>
-                    <span data-action-label class="hidden md:inline text-xs">Export HTML</span>
-                </button>
-                <button type="button" data-action="download-markdown" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2" title="Markdown 다운로드">
-                    <i class="fas fa-file-download"></i>
-                    <span data-action-label class="hidden md:inline text-xs">Export MD</span>
-                </button>
-                <button type="button" data-action="copy-markdown" class="h-10 px-3 hover:bg-[#333] hover:text-white transition-colors flex items-center gap-2 border-r border-ide-border" title="Markdown 복사">
-                    <i class="fas fa-copy"></i>
-                    <span data-action-label class="hidden md:inline text-xs">Copy</span>
-                </button>
-            </div>
-            
-            <a href="https://jtech-co.github.io/" data-action="open-jtech-home" class="ml-3 text-gray-500 hover:text-white transition-colors" aria-label="Open JTech home">
-                <i class="fab fa-github text-lg"></i>
-            </a>
-        </div>
-    </header>
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative bg-ide-bg">
-        <section class="flex-1 flex flex-col border-b md:border-b-0 md:border-r border-ide-border min-h-[50%] md:min-h-full">
-            <div class="h-8 flex items-center justify-between px-4 bg-[#0a0a0a] border-b border-ide-border">
-                <div class="flex h-full">
-                    <div class="px-3 h-full flex items-center gap-2 bg-[#000] border-r border-t-2 border-t-ide-accent border-r-ide-border text-xs text-white font-mono">
-                        <i class="fab fa-markdown text-blue-400"></i>
-                        untitled.md
-                    </div>
-                </div>
-                <span id="saveStatus" class="text-[10px] text-green-500 font-mono hidden uppercase">
-                    <i class="fas fa-save mr-1"></i>Saved
-                </span>
-            </div>
-            <div class="flex-1 relative w-full h-full bg-[#000]">
-                <div class="absolute left-0 top-0 bottom-0 w-0 md:w-0 bg-[#0a0a0a] border-r border-ide-border text-gray-600 text-xs font-mono pt-4 text-right pr-2 select-none hidden"></div>
-                <textarea 
-                    id="editor" 
-                    class="w-full h-full p-4 resize-none bg-[#000000] text-gray-200 editor-font text-sm leading-relaxed sync-scroll border-none focus:ring-0"
-                    placeholder="// Start typing your markdown here..."
-                    spellcheck="false"
-                ></textarea>
-            </div>
-        </section>
-        <section class="flex-1 flex flex-col min-h-[50%] md:min-h-full bg-[#000]">
-            <div class="h-8 flex items-center justify-between px-0 bg-[#0a0a0a] border-b border-ide-border select-none">
-                <div class="flex h-full">
-                    <button type="button" data-view-mode="preview" id="btnPreview" class="px-4 h-full flex items-center gap-2 bg-[#000] border-t-2 border-t-ide-accent border-r border-ide-border text-xs text-white font-mono transition-colors">
-                        <i class="fas fa-eye text-green-400"></i> Preview
-                    </button>
-                    <button type="button" data-view-mode="source" id="btnSource" class="px-4 h-full flex items-center gap-2 bg-[#0a0a0a] border-t-2 border-t-transparent border-r border-ide-border text-xs text-gray-500 hover:text-gray-300 font-mono transition-colors">
-                        <i class="fas fa-code text-orange-400"></i> HTML Source
-                    </button>
-                </div>
-            </div>
-            <div id="previewContainer" class="flex-1 p-6 md:p-8 overflow-auto prose prose-invert max-w-none sync-scroll bg-[#000] text-gray-200" tabindex="0"></div>
-            <div id="sourceContainer" class="hidden flex-1 p-0 overflow-auto bg-[#000]">
-                <pre class="m-0 p-4 text-sm font-mono whitespace-pre"><code id="sourceCode" class="language-html"></code></pre>
-            </div>
-        </section>
-    </main>
-    <footer class="h-6 bg-[#007acc] text-white flex items-center justify-between px-3 text-[10px] font-mono select-none z-10">
-        <div class="flex gap-4">
-            <span class="flex items-center gap-1"><i class="fas fa-code-branch"></i> main</span>
-            <span class="flex items-center gap-1"><i class="fas fa-check-circle"></i> Ready</span>
-        </div>
-        <div class="flex gap-4">
-            <span>Ln <span id="lineCount">1</span>, Col <span id="colCount">1</span></span>
-            <span>UTF-8</span>
-            <span>Markdown</span>
-            <span class="pl-2 border-l border-white/30"><span id="charCount">0</span> chars</span>
-        </div>
-    </footer>
-    <div id="toast" class="fixed bottom-10 right-4 transform translate-y-20 opacity-0 transition-all duration-200 bg-[#252526] border border-[#454545] text-white px-4 py-3 shadow-2xl flex items-center gap-3 min-w-[300px] z-50">
-        <div class="text-[#007acc]"><i class="fas fa-info-circle"></i></div>
-        <div class="flex-1 text-xs font-mono" id="toastMsg">Notification</div>
+<body>
+  <a class="skip-link" href="#editor">Skip to Markdown editor</a>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 6 6 6-6 6m10 0h6"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 19V5h6l2 3h10v3M3 19l3-8h16l-3 8Z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="0"/><path d="M15 8V3H3v13h5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 7 3-3a5 5 0 0 1 7 7l-3 3m-3 3-3 3a5 5 0 0 1-7-7l3-3m1 6 8-8"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3 3 0 0 0-1-2c4 0 7-2 7-6 0-2-1-3-2-4 0-1 0-3-1-4-2 0-3 1-4 2a16 16 0 0 0-5 0C8 3 6 2 5 2 4 3 4 5 5 6c-2 1-2 3-2 4 0 4 3 6 7 6-1 1-1 2-1 3v3"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+  <header class="app-header">
+    <div class="brand"><span class="brand-icon"><svg><use href="#i-terminal"/></svg></span><div><a class="brand-name" href="./" aria-label="R.M.C. workspace">R.M.C.<span class="version">2.0.1</span></a><span class="brand-description">Real-time Markdown Converter</span></div></div>
+    <div class="header-actions">
+      <span class="local-badge"><span></span> Browser-local draft</span>
+      <button class="icon-button" type="button" data-action="settings" aria-label="Workspace settings" title="Workspace settings"><svg><use href="#i-settings"/></svg></button>
+      <a class="icon-button" href="https://github.com/JTech-CO/RMC" target="_blank" rel="noopener noreferrer" aria-label="Open R.M.C. on GitHub" title="R.M.C. on GitHub"><svg><use href="#i-github"/></svg></a>
     </div>
-    <div id="confirmDialog" class="hidden fixed inset-0 z-[60] items-center justify-center bg-black/70 px-4" role="dialog" aria-modal="true" aria-labelledby="confirmDialogTitle">
-        <div class="w-full max-w-sm border border-[#454545] bg-[#1b1b1b] shadow-2xl">
-            <div class="border-b border-ide-border px-4 py-3">
-                <h2 id="confirmDialogTitle" class="text-sm font-semibold text-white">Start a new document?</h2>
-            </div>
-            <div class="px-4 py-4 text-sm text-gray-300">
-                Current content will be backed up before the editor is cleared.
-            </div>
-            <div class="flex justify-end gap-2 border-t border-ide-border px-4 py-3">
-                <button type="button" data-dialog-action="cancel" class="h-8 px-3 text-xs text-gray-300 hover:bg-[#333] hover:text-white">
-                    Keep Editing
-                </button>
-                <button type="button" data-dialog-action="confirm-new-document" class="h-8 px-3 bg-[#007acc] text-xs text-white hover:bg-[#0b8fe8]">
-                    Start New
-                </button>
-            </div>
+  </header>
+  <div class="command-bar">
+    <nav class="menus" aria-label="Document commands">
+      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="file" aria-haspopup="menu" aria-expanded="false" aria-controls="fileMenu">File<svg><use href="#i-chevron"/></svg></button>
+        <div class="menu-panel" id="fileMenu" role="menu" aria-label="File" hidden>
+          <button type="button" role="menuitem" data-action="new">New document<span>New</span></button>
+          <button type="button" role="menuitem" data-action="open">Open Markdown…<span>Ctrl/⌘ O</span></button>
+          <div class="menu-rule" role="separator"></div>
+          <button type="button" role="menuitem" data-action="export-md">Export Markdown<span>Ctrl/⌘ S</span></button>
+          <button type="button" role="menuitem" data-action="export-html" data-needs-html>Export HTML<span>.html</span></button>
+          <div class="menu-rule" role="separator"></div>
+          <button type="button" role="menuitem" data-action="restore">Restore previous document</button>
+          <button type="button" role="menuitem" class="mobile-menu-help" data-action="help">Help &amp; keyboard shortcuts</button>
         </div>
+      </div>
+      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="edit" aria-haspopup="menu" aria-expanded="false" aria-controls="editMenu">Edit<svg><use href="#i-chevron"/></svg></button>
+        <div class="menu-panel" id="editMenu" role="menu" aria-label="Edit" hidden>
+          <button type="button" role="menuitem" data-format="bold">Bold<span>Ctrl/⌘ B</span></button>
+          <button type="button" role="menuitem" data-format="italic">Italic<span>Ctrl/⌘ I</span></button>
+          <button type="button" role="menuitem" data-format="link">Link<span>Ctrl/⌘ K</span></button>
+          <button type="button" role="menuitem" data-format="block">Fenced code block</button>
+          <button type="button" role="menuitem" data-action="copy-html" data-needs-html>Copy HTML fragment</button>
+        </div>
+      </div>
+      <button class="menu-trigger help-trigger" type="button" data-action="help">Help</button>
+    </nav>
+    <div class="file-actions">
+      <button class="button quiet" type="button" data-action="open" aria-label="Open Markdown file"><svg><use href="#i-open"/></svg><span>Open</span></button>
+      <button class="button quiet" type="button" data-action="copy-md" aria-label="Copy Markdown"><svg><use href="#i-copy"/></svg><span>Copy MD</span></button>
+      <button class="button quiet export-md-button" type="button" data-action="export-md" aria-label="Export Markdown"><svg><use href="#i-down"/></svg><span>Export MD</span></button>
+      <button class="button primary" type="button" data-action="export-html" aria-label="Export HTML" data-needs-html><svg><use href="#i-code"/></svg><span>Export HTML</span></button>
     </div>
-    <script type="module" src="js/main.js"></script>
+  </div>
+  <div id="conflictBanner" class="notice conflict" role="alert" hidden><span>Another tab changed this draft. Autosave is paused; your text has not been replaced.</span><div><button type="button" data-action="load-other">Load other draft</button><button type="button" data-action="keep-local">Keep this tab</button></div></div>
+  <div id="storageBanner" class="notice" role="status" hidden><span id="storageMessage">Local storage is unavailable. Export Markdown to keep a copy.</span><button type="button" data-action="export-md">Export MD</button></div>
+  <div class="mobile-views" role="group" aria-label="Workspace view">
+    <button type="button" data-mobile="editor" aria-pressed="true">Markdown</button><button type="button" data-mobile="preview" aria-pressed="false">Preview</button><button type="button" data-mobile="source" aria-pressed="false">HTML</button>
+  </div>
+  <main id="workspace" class="workspace" data-mobile="editor">
+    <section class="pane editor-pane" aria-label="Markdown editor">
+      <div class="pane-header"><div class="document-title"><span class="md-icon" aria-hidden="true">M↓</span><label class="sr-only" for="filename">Document filename</label><input id="filename" value="untitled.md" spellcheck="false" maxlength="110" autocomplete="off"></div><span id="saveStatus" class="save-status" role="status" aria-live="polite">Starting…</span></div>
+      <div class="format-bar" role="group" aria-label="Markdown formatting">
+        <button type="button" data-format="heading" title="Insert heading" aria-label="Insert heading">H<span>2</span></button><span class="divider"></span>
+        <button type="button" data-format="bold" title="Bold (Ctrl/⌘ B)" aria-label="Bold"><b>B</b></button>
+        <button type="button" data-format="italic" title="Italic (Ctrl/⌘ I)" aria-label="Italic"><i>I</i></button>
+        <button type="button" data-format="link" title="Insert link (Ctrl/⌘ K)" aria-label="Insert link"><svg><use href="#i-link"/></svg></button>
+        <button type="button" data-format="block" title="Insert code block" aria-label="Insert code block"><svg><use href="#i-code"/></svg></button>
+        <button type="button" data-format="quote" title="Insert blockquote" aria-label="Insert blockquote">❞</button>
+        <button type="button" data-format="task" title="Insert task" aria-label="Insert task"><svg><use href="#i-check"/></svg></button>
+        <span class="format-hint">Markdown</span>
+      </div>
+      <div class="editor-surface"><label for="editor" class="sr-only">Markdown source</label><textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editorHint" placeholder="# Start something new…"></textarea></div>
+      <div class="pane-footer" id="editorHint"><span>Drop a .md file to open</span><span id="totalLines">1</span><span>lines</span></div>
+    </section>
+    <div id="splitter" class="splitter" role="separator" tabindex="0" aria-label="Resize editor and preview; arrow keys adjust, Home resets" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" aria-controls="editor previewContainer"></div>
+    <section class="pane output-pane" aria-label="Converted document">
+      <div class="pane-header output-header"><div class="view-tabs" role="tablist" aria-label="Output view"><button type="button" id="previewTab" data-view="preview" role="tab" aria-selected="true" aria-controls="previewContainer"><svg><use href="#i-eye"/></svg>Preview</button><button type="button" id="sourceTab" data-view="source" role="tab" aria-selected="false" tabindex="-1" aria-controls="sourceContainer"><svg><use href="#i-code"/></svg>HTML source</button></div><span class="live-indicator"><span></span> LIVE</span></div>
+      <div class="output-tools"><span id="renderStatus" role="status">Loading renderer…</span><label class="sync-label"><input type="checkbox" id="syncScroll" checked>Sync scroll</label></div>
+      <div id="previewContainer" class="preview-scroll" role="tabpanel" aria-labelledby="previewTab" tabindex="0"><article id="preview" class="markdown-body"><p class="boot-message">Loading the Markdown renderer. Your editor is available independently.</p></article></div>
+      <div id="sourceContainer" class="source-scroll" role="tabpanel" aria-labelledby="sourceTab" tabindex="0" hidden><pre><code id="sourceCode"></code></pre></div>
+      <div class="pane-footer"><span id="outputNote">Sanitized HTML · external images blocked</span><button type="button" class="text-button" data-action="copy-html" data-needs-html>Copy HTML</button></div>
+    </section>
+  </main>
+  <footer class="status-bar"><div><span class="status-brand">R.M.C.</span><span id="appStatus">Local workspace</span></div><div><span id="cursor">Ln 1, Col 1</span><span class="status-encoding">UTF-8</span><span><span id="charCount">0</span> chars</span></div></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <input id="fileInput" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden>
+  <dialog id="confirmDialog" aria-labelledby="dialogTitle" aria-describedby="dialogText"><form method="dialog"><span class="eyebrow">DOCUMENT PROTECTION</span><h2 id="dialogTitle">Replace document?</h2><p id="dialogText"></p><div class="dialog-actions"><button class="button quiet" id="dialogCancel" value="cancel">Cancel</button><button class="button primary" id="dialogConfirm" value="confirm">Continue</button></div></form></dialog>
+  <dialog id="settingsDialog" aria-labelledby="settingsTitle"><form method="dialog"><span class="eyebrow">WORKSPACE PREFERENCES</span><h2 id="settingsTitle">Keep it your way.</h2><p>The workspace always stays dark. Settings and drafts are stored in this browser.</p><label class="setting"><span><strong>Soft line breaks</strong><small>Render single Markdown line breaks as &lt;br&gt;. On by default for compatibility.</small></span><input type="checkbox" id="softBreaks" checked></label><label class="setting"><span><strong>Load external images</strong><small>Allow HTTPS image requests in preview and exported HTML. This may disclose your IP address to image hosts.</small></span><input type="checkbox" id="allowImages"></label><div class="dialog-actions"><button class="button primary" value="done">Done</button></div></form></dialog>
+  <dialog id="helpDialog" aria-labelledby="helpTitle"><form method="dialog"><span class="eyebrow">A SMALL FIELD GUIDE</span><h2 id="helpTitle">Just you and your words.</h2><p>Write on the left, preview on the right. Open local UTF-8 Markdown files up to 512 KiB. Very large documents stay editable, but preview is limited to 300,000 UTF-16 code units.</p><dl class="shortcut-list"><div><dt>Open file</dt><dd>Ctrl / ⌘ O</dd></div><div><dt>Export Markdown</dt><dd>Ctrl / ⌘ S</dd></div><div><dt>Bold / italic / link</dt><dd>Ctrl / ⌘ B / I / K</dd></div></dl><p>“Saved locally” is not a cloud backup. Clearing browser data removes drafts. Export important work. HTML source is the exact sanitized fragment, not a whitespace-changing pretty print.</p><p class="muted">No account or backend. The default package loads pinned rendering libraries from CDNs. See the README for locally hosted dependencies.</p><div class="dialog-actions"><a class="button quiet" href="https://jtech-co.github.io/" target="_blank" rel="noopener noreferrer">JTech home ↗</a><button class="button primary" value="done">Got it</button></div></form></dialog>
+  <noscript><div class="noscript">R.M.C. needs JavaScript for conversion and saving. No document is sent to a server.</div></noscript>
 </body>
 </html>

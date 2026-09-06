@@ -1,0 +1,10 @@
+{
+  "startedAt": "2026-09-06T07:19:43+0000",
+  "mode": "actual hosted browser",
+  "browser": "144.0.7559.96",
+  "passed": [],
+  "failures": [
+    "Error: Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:48435/\nCall log:\n  - navigating to \"http://127.0.0.1:48435/\", waiting until \"domcontentloaded\"\n"
+  ],
+  "pageErrors": []
+}

@@ -1,28 +1,24 @@
 {
-    "name": "real-time-markdown-converter",
-    "version": "1.1.0",
-    "description": "Real-time Markdown Converter with IDE-like interface",
-    "main": "index.html",
-    "scripts": {
-        "check": "node scripts/check.js",
-        "check:all": "npm run check && npm run check:e2e",
-        "check:e2e": "node scripts/e2e-smoke.js",
-        "dev": "live-server --port=8000 --open=/index.html",
-        "start": "npm run dev",
-        "serve": "http-server -p 8000 -c-1 -o /index.html",
-        "preview": "http-server -p 8000 -c-1",
-        "test": "npm run check"
-    },
-    "keywords": [
-        "markdown",
-        "converter",
-        "editor",
-        "real-time"
-    ],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "http-server": "^14.1.1",
-        "live-server": "^1.2.2"
-    }
+  "name": "real-time-markdown-converter",
+  "version": "2.0.1",
+  "private": true,
+  "description": "A dark, local-first Markdown workspace. No build step or backend.",
+  "type": "module",
+  "license": "MIT",
+  "author": "JTech_CO",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "preview": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check:all": "npm run check && npm test",
+    "test:browser": "python tests/browser.py",
+    "vendor": "node scripts/vendor.mjs",
+    "vendor:check": "node scripts/vendor.mjs --check",
+    "test:ui": "python tests/ui_layout.py"
+  }
 }

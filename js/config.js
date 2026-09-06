@@ -1,31 +1,11 @@
-export const DEFAULT_MARKDOWN = `# Welcome to R.M.C. (High Contrast Mode)
-
-**R.M.C.** is a real-time markdown editor designed for developers.
-This view is optimized for **focus** and **contrast**.
-
-## Features
-
-1. **High Contrast UI**: Pure black background for OLED screens.
-2. **IDE-like Layout**: Maximized screen real estate.
-3. **Syntax Highlighting**:
-   \`\`\`javascript
-   function sayHello() {
-       console.log("Hello, Dark Mode!");
-   }
-   sayHello();
-   \`\`\`
-
-## Data Structure Example
-
-| ID | Name | Role | Status |
-|----|------|------|--------|
-| 01 | Admin| Root | Active |
-| 02 | User | Dev  | Idle   |
-
-> "Simplicity is the soul of efficiency." - *Austin Freeman*
-`;
-
-export const STORAGE_KEY = 'rmc_content_dark';
-export const BACKUP_STORAGE_KEY = 'rmc_content_backup';
-export const AUTO_SAVE_DELAY = 1000;
-export const SAVE_STATUS_DISPLAY_TIME = 2000;
+export const VERSION = '2.0.1';
+export const STORAGE_KEY = 'rmc_document_v2';
+export const BACKUP_KEY = 'rmc_backup_v2';
+export const SETTINGS_KEY = 'rmc_settings_v2';
+export const LEGACY_KEY = 'rmc_content_dark';
+export const LEGACY_BACKUP_KEY = 'rmc_content_backup';
+export const MAX_INPUT_BYTES = 512 * 1024;
+export const MAX_RENDER_CHARS = 300_000;
+export const SAVE_DELAY = 500;
+export const RENDER_DELAY = 140;
+export const DEFAULT_MARKDOWN = `# A little less friction.\n\nA focused space for **Markdown**, with a live preview and clean HTML.\n\nWelcome to **R.M.C.** — Real-time Markdown Converter. Your draft stays in this browser.\n\n## Write. Preview. Export.\n\n1. Write Markdown on the left.\n2. Check the preview or inspect the HTML.\n3. Export a document when you are ready.\n\n> Your words, not a dashboard. No account. No backend.\n\n## Made for the details\n\n| Feature | Ready |\n| :--- | :--- |\n| GitHub-style tables | Yes |\n| Code highlighting | Yes |\n| Local draft recovery | Yes |\n| Korean & Unicode | 안녕하세요 👋 |\n\n\`\`\`javascript\nconst message = "Hello, R.M.C.";\n\nfunction write(markdown) {\n  return { markdown, saved: true };\n}\n\nconsole.log(write(message));\n\`\`\`\n\n### A small checklist\n\n- [x] Keep the dark workspace\n- [x] Make the output portable\n- [ ] Write something worth sharing\n\n---\n\n**Tip:** Select text and use **Ctrl / ⌘ + B** for bold. Open a local \`.md\` file with **Ctrl / ⌘ + O**.\n`;

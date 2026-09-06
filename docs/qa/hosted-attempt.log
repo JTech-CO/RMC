@@ -1,0 +1,6 @@
+FAIL: Error: Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:54873/
+Call log:
+  - navigating to "http://127.0.0.1:54873/", waiting until "domcontentloaded"
+
+No dependency fixtures or policy bypasses were used. Check CDN access, browser policy and HTTP serving. For a self-hosted dependency run, first execute npm run vendor.
+0 hosted-browser checks passed; 1 failure(s).

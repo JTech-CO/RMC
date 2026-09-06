@@ -1,0 +1,505 @@
+{
+  "scope": "CSS-only UI layout; fixed document fixture; actual ui.js menu/splitter utilities. Not hosted converter E2E.",
+  "browser": "144.0.7559.96",
+  "passed": 96,
+  "total": 96,
+  "failures": [],
+  "checks": [
+    {
+      "name": "Document/export stylesheet is byte-identical to 2.0.0",
+      "passed": true
+    },
+    {
+      "name": "Default Markdown content is unchanged",
+      "passed": true
+    },
+    {
+      "name": "Desktop UI body uses a 16px base",
+      "passed": true
+    },
+    {
+      "name": "Main controls are 16px; auxiliary chrome is at least 14px",
+      "passed": true,
+      "details": {
+        ".menu-trigger": "16px",
+        ".button": "16px",
+        ".menu-panel button": "16px",
+        "#filename": "16px",
+        ".save-status": "14px",
+        ".view-tabs button": "16px",
+        ".pane-footer": "14px",
+        ".status-bar": "14px",
+        ".brand-description": "14px",
+        ".format-hint": "14px"
+      }
+    },
+    {
+      "name": "All application frame/control corners are square",
+      "passed": true
+    },
+    {
+      "name": "Control icons use square-ended/miter strokes",
+      "passed": true
+    },
+    {
+      "name": "Disabled controls remain legible, without opacity fading",
+      "passed": true
+    },
+    {
+      "name": "UI contrast text/panel >= 7:1",
+      "passed": true,
+      "details": 16.137
+    },
+    {
+      "name": "UI contrast text/toolbar >= 7:1",
+      "passed": true,
+      "details": 15.356
+    },
+    {
+      "name": "UI contrast text/surface >= 7:1",
+      "passed": true,
+      "details": 12.571
+    },
+    {
+      "name": "UI contrast text/active >= 7:1",
+      "passed": true,
+      "details": 11.398
+    },
+    {
+      "name": "UI contrast muted/panel >= 7:1",
+      "passed": true,
+      "details": 11.081
+    },
+    {
+      "name": "UI contrast muted/toolbar >= 7:1",
+      "passed": true,
+      "details": 10.545
+    },
+    {
+      "name": "UI contrast muted/surface >= 7:1",
+      "passed": true,
+      "details": 8.632
+    },
+    {
+      "name": "UI contrast muted/active >= 7:1",
+      "passed": true,
+      "details": 7.826
+    },
+    {
+      "name": "UI contrast subtle/panel >= 7:1",
+      "passed": true,
+      "details": 10.424
+    },
+    {
+      "name": "UI contrast subtle/toolbar >= 7:1",
+      "passed": true,
+      "details": 9.92
+    },
+    {
+      "name": "UI contrast subtle/surface >= 7:1",
+      "passed": true,
+      "details": 8.12
+    },
+    {
+      "name": "UI contrast subtle/active >= 7:1",
+      "passed": true,
+      "details": 7.362
+    },
+    {
+      "name": "No horizontal page overflow 1920x1080 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 1920x1080 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 1440x1000 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 1440x1000 / preview",
+      "passed": true
+    },
+    {
+      "name": "Document and canvas computed typography/colors unchanged at 1440px",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "No horizontal page overflow 1024x768 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 1024x768 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 930x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 930x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 800x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 800x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 768x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 768x700 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 767x844 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 767x844 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 767x844 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 767x844 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 767x844 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 767x844 / source",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 430x932 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 430x932 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 430x932 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 430x932 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 430x932 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 430x932 / source",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 390x844 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 390x844 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 390x844 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 390x844 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 390x844 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 390x844 / source",
+      "passed": true
+    },
+    {
+      "name": "Document and canvas computed typography/colors unchanged at 390px",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "No horizontal page overflow 360x800 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x800 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 360x800 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x800 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 360x800 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x800 / source",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 320x568 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 320x568 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 320x568 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 320x568 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 320x568 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 320x568 / source",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 720x500 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 720x500 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 720x500 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 720x500 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 720x500 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 720x500 / source",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 360x400 / editor",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x400 / editor",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 360x400 / preview",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x400 / preview",
+      "passed": true
+    },
+    {
+      "name": "No horizontal page overflow 360x400 / source",
+      "passed": true
+    },
+    {
+      "name": "Visible workspace retains editing area 360x400 / source",
+      "passed": true
+    },
+    {
+      "name": "Desktop End skips the hidden mobile Help item",
+      "passed": true
+    },
+    {
+      "name": "Escape restores File trigger focus",
+      "passed": true
+    },
+    {
+      "name": "Existing keyboard splitter still adjusts width",
+      "passed": true
+    },
+    {
+      "name": "Existing splitter Home reset remains available",
+      "passed": true
+    },
+    {
+      "name": "Settings dialog uses 16px body text and square border",
+      "passed": true
+    },
+    {
+      "name": "File menu is fully inside desktop viewport",
+      "passed": true
+    },
+    {
+      "name": "Desktop 25% split does not overflow the page",
+      "passed": true
+    },
+    {
+      "name": "Desktop 25% split tab controls fit panel",
+      "passed": true
+    },
+    {
+      "name": "Desktop 75% split does not overflow the page",
+      "passed": true
+    },
+    {
+      "name": "Desktop 75% split tab controls fit panel",
+      "passed": true
+    },
+    {
+      "name": "Mobile Help is reachable as the last File-menu action",
+      "passed": true
+    },
+    {
+      "name": "Mobile Help opens the native dialog",
+      "passed": true
+    },
+    {
+      "name": "File menu fits a 320px viewport",
+      "passed": true
+    },
+    {
+      "name": "Edit menu fits a 320px viewport",
+      "passed": true
+    },
+    {
+      "name": "320px settings dialog fits without horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "Visible error banners do not introduce horizontal overflow at 320px",
+      "passed": true
+    },
+    {
+      "name": "User root font preference enlarges menu labels to 20px",
+      "passed": true
+    },
+    {
+      "name": "Larger root font does not cause horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "320px viewport supports a larger 20px root font without horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "File menu fits at 320px with a 20px root font",
+      "passed": true
+    },
+    {
+      "name": "Edit menu fits at 320px with a 20px root font",
+      "passed": true
+    }
+  ],
+  "measurements": {
+    "ui_font_sizes": {
+      ".menu-trigger": "16px",
+      ".button": "16px",
+      ".menu-panel button": "16px",
+      "#filename": "16px",
+      ".save-status": "14px",
+      ".view-tabs button": "16px",
+      ".pane-footer": "14px",
+      ".status-bar": "14px",
+      ".brand-description": "14px",
+      ".format-hint": "14px"
+    },
+    "token_contrasts": [
+      {
+        "foreground": "text",
+        "background": "panel",
+        "ratio": 16.137
+      },
+      {
+        "foreground": "text",
+        "background": "toolbar",
+        "ratio": 15.356
+      },
+      {
+        "foreground": "text",
+        "background": "surface",
+        "ratio": 12.571
+      },
+      {
+        "foreground": "text",
+        "background": "active",
+        "ratio": 11.398
+      },
+      {
+        "foreground": "muted",
+        "background": "panel",
+        "ratio": 11.081
+      },
+      {
+        "foreground": "muted",
+        "background": "toolbar",
+        "ratio": 10.545
+      },
+      {
+        "foreground": "muted",
+        "background": "surface",
+        "ratio": 8.632
+      },
+      {
+        "foreground": "muted",
+        "background": "active",
+        "ratio": 7.826
+      },
+      {
+        "foreground": "subtle",
+        "background": "panel",
+        "ratio": 10.424
+      },
+      {
+        "foreground": "subtle",
+        "background": "toolbar",
+        "ratio": 9.92
+      },
+      {
+        "foreground": "subtle",
+        "background": "surface",
+        "ratio": 8.12
+      },
+      {
+        "foreground": "subtle",
+        "background": "active",
+        "ratio": 7.362
+      }
+    ],
+    "canvas_styles": {
+      "1440": {
+        "unchanged": true,
+        "differences": {}
+      },
+      "390": {
+        "unchanged": true,
+        "differences": {}
+      }
+    }
+  }
+}
