@@ -1,4 +1,4 @@
-# R.M.C. — Real-time Markdown Converter
+# R.M.C. - Real-time Markdown Converter
 
 **A focused, dark Markdown workspace. Write, preview and export — without an account or backend.**
 
