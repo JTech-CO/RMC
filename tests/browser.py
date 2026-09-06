@@ -60,6 +60,16 @@ def main() -> int:
             page = context.new_page()
             page.on('pageerror', lambda error: page_errors.append(str(error)))
             page.goto(base, wait_until='domcontentloaded')
+            # Loading HTML is not enough: assert that the current release's CSS actually applies.
+            page.wait_for_function("""() => {
+                const html = document.documentElement;
+                const applied = getComputedStyle(html).getPropertyValue('--rmc-ui-version')
+                    .trim().replaceAll('"', '').replaceAll("'", '');
+                return applied === html.dataset.rmcVersion
+                    && getComputedStyle(document.body).display === 'flex'
+                    && getComputedStyle(document.querySelector('#workspace')).display === 'grid';
+            }""", timeout=15000)
+            passed.append('Actual stylesheet release and flex/grid layout applied')
             # Do not count a plaintext fallback or renderer error as a successful startup.
             page.wait_for_function("document.querySelector('#renderStatus').textContent.startsWith('Updated')", timeout=30000)
             expect(page.locator('#preview h1')).to_be_visible()

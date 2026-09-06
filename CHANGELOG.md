@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.2 — static-deployment hotfix, 2026-09-06 (local handoff)
+
+- Versioned entry CSS/scripts **and** all local module imports, the Worker URL and the exported-document CSS fetch. No backend or mandatory build was introduced.
+- Added bounded intrinsic SVG sizes and stroke properties for stylesheet-failure cases.
+- Added an independent boot watchdog for missing/stale CSS and failed application-module initialization. It never reads or clears drafts.
+- Added a release manifest, version-stamping command, LF checkout rules, project-subpath HTTP tests and a read-only MIME/hash deployment verifier.
+- Added guarded legacy-file migration. A known unchanged 1.x file is backed up outside the web root only with `--apply`; modified files are refused. CI no longer hides orphan module problems.
+- Preserved the 2.0.1 UI/document styling, storage keys, Markdown behavior and CDN dependency pins. Exact CDN fetching and full hosted-browser validation remain unverified here.
+- Updated branch-deployment guidance. The inspected Pages job succeeded while separate CI failed on an obsolete `preview.js` import; the screenshot's cached-CSS explanation remains a hypothesis without the user's actual network response.
+
 ## 2.0.1 — UI-readability handoff, 2026-09-06 (not published upstream)
 
 ### Changed

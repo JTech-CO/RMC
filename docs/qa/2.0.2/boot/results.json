@@ -1,0 +1,46 @@
+{
+  "scope": "Isolated deployment-watchdog checks using actual markup/styles/boot script.\nNo real HTTP, ESM controller, CDN, Worker, storage or renderer execution is claimed.\n",
+  "checks": [
+    {
+      "name": "No CSS: deployment banner is visible",
+      "passed": true
+    },
+    {
+      "name": "No CSS: message identifies missing/outdated stylesheet",
+      "passed": true
+    },
+    {
+      "name": "No CSS: symbol definitions occupy zero height",
+      "passed": true
+    },
+    {
+      "name": "No CSS: regular icons keep a 20px intrinsic width",
+      "passed": true
+    },
+    {
+      "name": "No CSS: warning protects draft data",
+      "passed": true
+    },
+    {
+      "name": "Current CSS, failed module: banner is visible",
+      "passed": true
+    },
+    {
+      "name": "Current CSS, failed module: specific module startup message",
+      "passed": true
+    },
+    {
+      "name": "Current CSS and startup marker: no false warning",
+      "passed": true
+    },
+    {
+      "name": "Current CSS: application still uses flex layout",
+      "passed": true
+    },
+    {
+      "name": "Old stylesheet marker is rejected even after application startup",
+      "passed": true
+    }
+  ],
+  "passed": 10
+}

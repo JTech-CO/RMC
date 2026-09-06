@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-rmc-version="2.0.2">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -7,17 +7,22 @@
   <meta name="theme-color" content="#090c10">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>R.M.C. | Real-time Markdown Converter</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/editor.css">
-  <link rel="stylesheet" href="css/document.css">
-  <link rel="stylesheet" href="css/preview.css">
-  <script type="module" src="js/main.js"></script>
+  <title>R.M.C. — Real-time Markdown Converter</title>
+  <link rel="icon" href="assets/favicon.svg?v=2.0.2" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css?v=2.0.2">
+  <link rel="stylesheet" href="css/editor.css?v=2.0.2">
+  <link rel="stylesheet" href="css/document.css?v=2.0.2">
+  <link rel="stylesheet" href="css/preview.css?v=2.0.2">
+  <script defer src="js/boot.js?v=2.0.2"></script>
+  <script type="module" src="js/main.js?v=2.0.2"></script>
 </head>
 <body>
+  <aside id="deploymentNotice" role="alert" hidden style="background:#302719;color:#ffe0ad;border:2px solid #c19b60;padding:16px;flex-shrink:0;font:16px/1.5 system-ui,sans-serif;position:relative;z-index:1100">
+    <strong>R.M.C. files did not load consistently.</strong>
+    <span id="deploymentMessage">Reload the page after deployment finishes. Your saved draft has not been cleared.</span>
+  </aside>
   <a class="skip-link" href="#editor">Skip to Markdown editor</a>
-  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0">
     <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 6 6 6-6 6m10 0h6"/></symbol>
     <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 19V5h6l2 3h10v3M3 19l3-8h16l-3 8Z"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
@@ -31,16 +36,16 @@
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
   </svg>
   <header class="app-header">
-    <div class="brand"><span class="brand-icon"><svg><use href="#i-terminal"/></svg></span><div><a class="brand-name" href="./" aria-label="R.M.C. workspace">R.M.C.<span class="version">2.0.1</span></a><span class="brand-description">Real-time Markdown Converter</span></div></div>
+    <div class="brand"><span class="brand-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-terminal"/></svg></span><div><a class="brand-name" href="./" aria-label="R.M.C. workspace">R.M.C.<span class="version">2.0.2</span></a><span class="brand-description">Real-time Markdown Converter</span></div></div>
     <div class="header-actions">
       <span class="local-badge"><span></span> Browser-local draft</span>
-      <button class="icon-button" type="button" data-action="settings" aria-label="Workspace settings" title="Workspace settings"><svg><use href="#i-settings"/></svg></button>
-      <a class="icon-button" href="https://github.com/JTech-CO/RMC" target="_blank" rel="noopener noreferrer" aria-label="Open R.M.C. on GitHub" title="R.M.C. on GitHub"><svg><use href="#i-github"/></svg></a>
+      <button class="icon-button" type="button" data-action="settings" aria-label="Workspace settings" title="Workspace settings"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-settings"/></svg></button>
+      <a class="icon-button" href="https://github.com/JTech-CO/RMC" target="_blank" rel="noopener noreferrer" aria-label="Open R.M.C. on GitHub" title="R.M.C. on GitHub"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-github"/></svg></a>
     </div>
   </header>
   <div class="command-bar">
     <nav class="menus" aria-label="Document commands">
-      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="file" aria-haspopup="menu" aria-expanded="false" aria-controls="fileMenu">File<svg><use href="#i-chevron"/></svg></button>
+      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="file" aria-haspopup="menu" aria-expanded="false" aria-controls="fileMenu">File<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
         <div class="menu-panel" id="fileMenu" role="menu" aria-label="File" hidden>
           <button type="button" role="menuitem" data-action="new">New document<span>New</span></button>
           <button type="button" role="menuitem" data-action="open">Open Markdown…<span>Ctrl/⌘ O</span></button>
@@ -52,7 +57,7 @@
           <button type="button" role="menuitem" class="mobile-menu-help" data-action="help">Help &amp; keyboard shortcuts</button>
         </div>
       </div>
-      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="edit" aria-haspopup="menu" aria-expanded="false" aria-controls="editMenu">Edit<svg><use href="#i-chevron"/></svg></button>
+      <div class="menu-wrap"><button type="button" class="menu-trigger" data-menu="edit" aria-haspopup="menu" aria-expanded="false" aria-controls="editMenu">Edit<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
         <div class="menu-panel" id="editMenu" role="menu" aria-label="Edit" hidden>
           <button type="button" role="menuitem" data-format="bold">Bold<span>Ctrl/⌘ B</span></button>
           <button type="button" role="menuitem" data-format="italic">Italic<span>Ctrl/⌘ I</span></button>
@@ -64,10 +69,10 @@
       <button class="menu-trigger help-trigger" type="button" data-action="help">Help</button>
     </nav>
     <div class="file-actions">
-      <button class="button quiet" type="button" data-action="open" aria-label="Open Markdown file"><svg><use href="#i-open"/></svg><span>Open</span></button>
-      <button class="button quiet" type="button" data-action="copy-md" aria-label="Copy Markdown"><svg><use href="#i-copy"/></svg><span>Copy MD</span></button>
-      <button class="button quiet export-md-button" type="button" data-action="export-md" aria-label="Export Markdown"><svg><use href="#i-down"/></svg><span>Export MD</span></button>
-      <button class="button primary" type="button" data-action="export-html" aria-label="Export HTML" data-needs-html><svg><use href="#i-code"/></svg><span>Export HTML</span></button>
+      <button class="button quiet" type="button" data-action="open" aria-label="Open Markdown file"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-open"/></svg><span>Open</span></button>
+      <button class="button quiet" type="button" data-action="copy-md" aria-label="Copy Markdown"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-copy"/></svg><span>Copy MD</span></button>
+      <button class="button quiet export-md-button" type="button" data-action="export-md" aria-label="Export Markdown"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-down"/></svg><span>Export MD</span></button>
+      <button class="button primary" type="button" data-action="export-html" aria-label="Export HTML" data-needs-html><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-code"/></svg><span>Export HTML</span></button>
     </div>
   </div>
   <div id="conflictBanner" class="notice conflict" role="alert" hidden><span>Another tab changed this draft. Autosave is paused; your text has not been replaced.</span><div><button type="button" data-action="load-other">Load other draft</button><button type="button" data-action="keep-local">Keep this tab</button></div></div>
@@ -82,10 +87,10 @@
         <button type="button" data-format="heading" title="Insert heading" aria-label="Insert heading">H<span>2</span></button><span class="divider"></span>
         <button type="button" data-format="bold" title="Bold (Ctrl/⌘ B)" aria-label="Bold"><b>B</b></button>
         <button type="button" data-format="italic" title="Italic (Ctrl/⌘ I)" aria-label="Italic"><i>I</i></button>
-        <button type="button" data-format="link" title="Insert link (Ctrl/⌘ K)" aria-label="Insert link"><svg><use href="#i-link"/></svg></button>
-        <button type="button" data-format="block" title="Insert code block" aria-label="Insert code block"><svg><use href="#i-code"/></svg></button>
+        <button type="button" data-format="link" title="Insert link (Ctrl/⌘ K)" aria-label="Insert link"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-link"/></svg></button>
+        <button type="button" data-format="block" title="Insert code block" aria-label="Insert code block"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-code"/></svg></button>
         <button type="button" data-format="quote" title="Insert blockquote" aria-label="Insert blockquote">❞</button>
-        <button type="button" data-format="task" title="Insert task" aria-label="Insert task"><svg><use href="#i-check"/></svg></button>
+        <button type="button" data-format="task" title="Insert task" aria-label="Insert task"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></button>
         <span class="format-hint">Markdown</span>
       </div>
       <div class="editor-surface"><label for="editor" class="sr-only">Markdown source</label><textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editorHint" placeholder="# Start something new…"></textarea></div>
@@ -93,7 +98,7 @@
     </section>
     <div id="splitter" class="splitter" role="separator" tabindex="0" aria-label="Resize editor and preview; arrow keys adjust, Home resets" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" aria-controls="editor previewContainer"></div>
     <section class="pane output-pane" aria-label="Converted document">
-      <div class="pane-header output-header"><div class="view-tabs" role="tablist" aria-label="Output view"><button type="button" id="previewTab" data-view="preview" role="tab" aria-selected="true" aria-controls="previewContainer"><svg><use href="#i-eye"/></svg>Preview</button><button type="button" id="sourceTab" data-view="source" role="tab" aria-selected="false" tabindex="-1" aria-controls="sourceContainer"><svg><use href="#i-code"/></svg>HTML source</button></div><span class="live-indicator"><span></span> LIVE</span></div>
+      <div class="pane-header output-header"><div class="view-tabs" role="tablist" aria-label="Output view"><button type="button" id="previewTab" data-view="preview" role="tab" aria-selected="true" aria-controls="previewContainer"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg>Preview</button><button type="button" id="sourceTab" data-view="source" role="tab" aria-selected="false" tabindex="-1" aria-controls="sourceContainer"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><use href="#i-code"/></svg>HTML source</button></div><span class="live-indicator"><span></span> LIVE</span></div>
       <div class="output-tools"><span id="renderStatus" role="status">Loading renderer…</span><label class="sync-label"><input type="checkbox" id="syncScroll" checked>Sync scroll</label></div>
       <div id="previewContainer" class="preview-scroll" role="tabpanel" aria-labelledby="previewTab" tabindex="0"><article id="preview" class="markdown-body"><p class="boot-message">Loading the Markdown renderer. Your editor is available independently.</p></article></div>
       <div id="sourceContainer" class="source-scroll" role="tabpanel" aria-labelledby="sourceTab" tabindex="0" hidden><pre><code id="sourceCode"></code></pre></div>

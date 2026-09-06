@@ -1,4 +1,4 @@
-import { scrollRatio } from './utils.js';
+import { scrollRatio } from './utils.js?v=2.0.2';
 export function bindScrollSync(editor, preview, enabled) {
   let lock = null, unlockFrame, frame;
   const sync = (from, to) => {

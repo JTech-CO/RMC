@@ -1,13 +1,13 @@
-import { DEFAULT_MARKDOWN, SAVE_DELAY, RENDER_DELAY, MAX_INPUT_BYTES, STORAGE_KEY } from './config.js';
-import { record, debounce, normalizeText, safeFilename } from './utils.js';
-import { DraftStore, readSettings, writeSettings } from './storage.js';
-import { loadSanitizer, loadHighlighter } from './dependencies.js';
-import { Parser } from './parser.js';
-import { sanitizeHtml } from './markdown.js';
-import { applyFormat, updateMetadata } from './editor.js';
-import { copyText, createHtmlDocument, downloadFile, loadDocumentStyles } from './export.js';
-import { bindScrollSync } from './scroll-sync.js';
-import { bindMenus, bindSplitter, toast, askConfirmation } from './ui.js';
+import { DEFAULT_MARKDOWN, SAVE_DELAY, RENDER_DELAY, MAX_INPUT_BYTES, STORAGE_KEY } from './config.js?v=2.0.2';
+import { record, debounce, normalizeText, safeFilename } from './utils.js?v=2.0.2';
+import { DraftStore, readSettings, writeSettings } from './storage.js?v=2.0.2';
+import { loadSanitizer, loadHighlighter } from './dependencies.js?v=2.0.2';
+import { Parser } from './parser.js?v=2.0.2';
+import { sanitizeHtml } from './markdown.js?v=2.0.2';
+import { applyFormat, updateMetadata } from './editor.js?v=2.0.2';
+import { copyText, createHtmlDocument, downloadFile, loadDocumentStyles } from './export.js?v=2.0.2';
+import { bindScrollSync } from './scroll-sync.js?v=2.0.2';
+import { bindMenus, bindSplitter, toast, askConfirmation } from './ui.js?v=2.0.2';
 
 const $ = id => document.getElementById(id);
 const el = Object.fromEntries(['editor','filename','saveStatus','preview','previewContainer','sourceContainer','sourceCode',
@@ -282,3 +282,6 @@ void loadHighlighter().then(highlighter => {
 });
 void loadSanitizer().then(purify => { state.purify = purify; void render(); })
   .catch(error => { state.renderError = error; renderFailure(error); });
+
+// The independent boot watchdog distinguishes a failed module graph from a renderer/CDN error.
+document.documentElement.dataset.rmcBoot = "2.0.2";

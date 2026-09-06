@@ -1,6 +1,6 @@
 {
   "name": "real-time-markdown-converter",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "A dark, local-first Markdown workspace. No build step or backend.",
   "type": "module",
@@ -19,6 +19,10 @@
     "test:browser": "python tests/browser.py",
     "vendor": "node scripts/vendor.mjs",
     "vendor:check": "node scripts/vendor.mjs --check",
-    "test:ui": "python tests/ui_layout.py"
+    "test:ui": "python tests/ui_layout.py",
+    "release:stamp": "node scripts/stamp-release.mjs",
+    "check:deployment": "node scripts/check-deployment.mjs",
+    "migrate": "node scripts/cleanup-legacy.mjs",
+    "test:boot": "python tests/boot.py"
   }
 }

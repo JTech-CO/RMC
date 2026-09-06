@@ -1,6 +1,7 @@
 /* R.M.C. 2.0.1 — readable, square-edged application chrome.
    --ui-* tokens style controls only. Document/export CSS and canvas metrics stay unchanged. */
 :root {
+  --rmc-ui-version: "2.0.2";
   color-scheme: dark;
   --editor-bg: #090b0f;
   --accent: #83bcff; --muted: #9aa7b9; --faint: #748299;

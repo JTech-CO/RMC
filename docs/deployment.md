@@ -1,55 +1,74 @@
-# Deployment and upgrade
+# Static deployment — RMC 2.0.2
 
-## Replacing the old project
+RMC is still an HTML/CSS/JavaScript static application. No backend, Vite build, Node service or npm installation is required on GitHub Pages. `npm run dev` is only a localhost development helper.
 
-This is a **complete replacement source tree**, not a patch to append below the old files. Back up the repository working tree and export important in-browser Markdown first. Copy the contents of `RMC/` into the repository root while preserving the repository's `.git/` directory and any separately managed domain configuration such as `CNAME`. The archive does not contain a `.git/` directory or change the remote repository.
+## Upgrade an existing repository first
 
-Remove obsolete app assets after reviewing the diff: old `css/scrollbar.css`, `js/autoSave.js`, `js/preview.js`, `js/sourceFormatter.js`, `js/scrollSync.js`, `scripts/check.js`, `scripts/e2e-smoke.js`, and old deployment dependencies are no longer referenced. Their replacements use the structure described in README. Keeping unused old assets does not activate them, but it obscures maintenance and audits.
+Read [UPGRADE-KR.md](../UPGRADE-KR.md). An overlay of a ZIP does **not** remove obsolete 1.x files. The inspected repository retained `js/preview.js`, which imports a missing `sourceFormatter.js`; CI failed independently of the successful Pages deployment.
 
-The original legacy draft keys are left intact. The first new-version visit migrates an existing raw draft only when no v2 record exists, on the same origin. Rolling back to v1 will read the old legacy copy, not later v2 edits. Export the current v2 document before rolling back; do not assume bidirectional schema synchronization.
-
-## Local preflight
-
-```bash
-npm ci
+```sh
+npm run migrate                 # dry run
+npm run migrate -- --apply      # back up only recognized, unchanged legacy files outside the web root
 npm run check:all
-npm run dev
 ```
 
-Open the localhost URL printed by the server. Verify a Korean document, a multiline code block, a table, new/restore, file open, MD/HTML exports, clipboard permission denial and a narrow viewport. Do not treat core tests alone as a completed browser release gate.
+Review the Git diff before committing. Never remove `.git/`, a custom `CNAME`, personal configuration or browser draft storage. A modified legacy file is left untouched for manual review.
 
-For locally hosted dependencies and genuine browser checks:
+## Branch deployment (no custom build required)
 
-```bash
-npm run vendor
-npm run vendor:check
-python -m pip install -r tests/requirements.txt
-python -m playwright install chromium
-npm run test:browser
+Place `index.html`, `.nojekyll`, `release.json`, `css/`, `js/`, `assets/` and the existing `vendor/` folder at the repository root. Keep the included hidden files. Select **Settings → Pages → Build and deployment → Deploy from a branch → main → /(root)**. Do not put another RMC directory inside the publishing root. Do not select `/docs`, which contains project documentation, not the application entry point.
+
+Wait for the Pages deployment to succeed, then reload the published site. This package does not change any repository settings or publish a remote release automatically.
+
+## Cache-aware assets
+
+The entry CSS/scripts, local ES-module imports, classic Worker URL and document-style fetch all carry the same `?v=2.0.2` query. Updating just `main.js` in HTML is not sufficient: its imported modules have independent URLs. Do not remove these query strings. They create a different cache key after an upgrade; they do not bypass access restrictions or repair a missing server file.
+
+After intentionally editing application assets, increment the package version for a release and run `npm run release:stamp`. Commit the updated references and `release.json` together. Keep LF line endings; `.gitattributes` preserves deterministic file hashes on checkout.
+
+A classic boot watchdog checks the UI stylesheet version and the app initialization marker. It does not read, modify or erase drafts. A renderer-library error remains a renderer error, not a false application-startup failure. If the watchdog itself cannot load, it cannot display its warning. Intrinsic SVG dimensions prevent oversized icons even without the full stylesheet.
+
+## Read-only deployed-file verification
+
+```sh
+npm run check:deployment -- https://jtech-co.github.io/RMC/
 ```
 
-The vendoring step requires outbound HTTPS and fails explicitly on unavailable/wrong-version files. Review `vendor/manifest.json`, licenses and `js/runtime-urls.js`. This authoring handoff did not complete that network download. CI is supplied to run it in a normal network-enabled environment.
+This fetches the exact versioned runtime URLs and compares their bytes against the local release manifest. It reports HTTP errors, incorrect MIME types, old HTML, missing JS and mismatched CSS bytes. It does **not** execute the browser application or download external renderer dependencies. A `200` alone does not establish that the body is the expected stylesheet.
 
-## GitHub Pages: branch deployment
+Chrome troubleshooting: open Developer Tools → Network, enable **Disable cache**, reload, then inspect the stylesheet response and failed requests. Try **Ctrl+Shift+R** (Windows/Linux) or **Cmd+Shift+R** (macOS). Do not use **Clear site data** as a default fix: the local draft is stored in LocalStorage. A private window can test a fresh browser state without deleting the existing one.
 
-Place `index.html` at the repository root along with `css/`, `js/`, `assets/` and optionally `vendor/`. In the repository's Pages settings choose branch deployment and the root directory of the desired branch. There is no build output directory. Retain `.nojekyll`. All app paths are relative and support a project path such as `/RMC/`.
+The screenshot from the reported incident is consistent with the new HTML receiving old/incomplete CSS. The authoring environment could not retrieve that browser's actual HTTP responses, so cache mixing is a leading hypothesis, not a confirmed root cause.
 
-In CDN mode those folders are enough to serve the app, but client access to the pinned library hosts is required. In local mode deploy the complete `vendor/` directory and the corresponding modified `runtime-urls.js` together. A partial upload will break loading. Test the final published URL because hosting MIME, CSP and base-path behavior is outside the unit suite.
+## Optional self-hosted dependencies / Actions
 
-## GitHub Pages: optional manual workflow
+The default mode remains CDN, with the same explicit library pins as 2.0.1. This hotfix does not claim the pinned CDN responses have been downloaded or validated. Run `npm run vendor && npm run vendor:check` in an environment with network access to prepare local dependency files and licenses; successful vendoring also regenerates `release.json`. Commit `vendor/`, `js/runtime-urls.js` and `release.json` together.
 
-`.github/workflows/pages.yml` runs **only via workflow_dispatch**. Select GitHub Actions as the Pages source, then manually run “Deploy Pages (manual)”. It vendors dependencies, verifies hashes, packages only runtime assets, and deploys them. It does not publish on every push by default. Required Pages permissions and environment configuration depend on repository settings. The workflow has been supplied, not executed during this handoff.
+The optional **Deploy Pages (manual)** workflow is only for repositories intentionally configured with Source=GitHub Actions. It packages the runtime files and the release marker. A branch-deployed site does not need this workflow. CI and the automatic branch Pages workflow are separate; a green Pages upload is not proof that tests or browser rendering passed.
 
-`.github/workflows/ci.yml` is separate: it checks pushes/pull requests, vendors the renderer and runs the real browser suite. A failing CDN download or browser test fails CI instead of using compatibility fixtures.
+## Local project-subpath check
 
-## Other static hosts
+```sh
+BASE_PATH=/RMC/ npm run dev
+npm run check:deployment -- http://127.0.0.1:8000/RMC/
+```
 
-Publish `index.html`, `.nojekyll`, `assets/`, `css/`, `js/` and, in local mode, `vendor/`. No backend, secrets or environment variables are required in the deployed application. Serve JavaScript with a JavaScript MIME type and CSS as `text/css`; enable HTTPS. Do not publish local QA output, test fixtures or development environment files as runtime assets.
+PowerShell:
 
-The HTML includes a meta CSP. Add deployment headers where supported, including `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` and `Content-Security-Policy: frame-ancestors 'none'` to complement it. The latter cannot be provided by a meta tag. A host-specific CSP must still allow the configured library locations, same-origin workers and document style loading. Test rather than blindly replacing the existing policy.
+```powershell
+$env:BASE_PATH = '/RMC/'
+npm.cmd run dev
+```
 
-## Known operational boundaries
+Open a second terminal for the verification command. The built-in server binds only to localhost; GitHub Pages does not run it.
 
-There is no service worker, cache invalidation daemon, authentication or server-side saving. Browser-local drafts are not a data backup system. In particular, GitHub project paths on the same hostname share an origin; other scripts hosted at that origin are not isolated from localStorage. Use a separate origin for sensitive independent applications.
+## Evidence and sources
 
-The optional dev server binds to 127.0.0.1. Do not expose it as an internet-facing application server. For production use the static host's normal infrastructure. Clipboard APIs may depend on secure context and user permissions; a failure is surfaced, not reported as a successful copy. Test Safari, Firefox, real touch keyboards and at least one screen reader before announcing broad browser/accessibility support.
+See [QA-REPORT.md](QA-REPORT.md) for exact executed checks and blocked hosted-browser tests.
+
+- GitHub Pages static hosting: https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
+- Publishing sources: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- HTTP caching and versioned URLs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+- Chrome network/cache tools: https://developer.chrome.com/docs/devtools/network/reference
+- Inspected Pages run: https://github.com/JTech-CO/RMC/actions/runs/34020108949
+- Inspected failed CI run: https://github.com/JTech-CO/RMC/actions/runs/34020109395

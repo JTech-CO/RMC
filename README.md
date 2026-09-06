@@ -6,7 +6,19 @@
 
 ![R.M.C. desktop workspace](docs/screenshots/desktop.png)
 
-> This is the **2.0.1 UI-readability revision**, based on upstream `main` at `748248cb3401b9142f5dbef1274c2bc044011cec`. It is not an already-published upstream release. The screenshots use the real application markup/CSS with a fixed sample document in an isolated layout harness. They are not proof of a hosted renderer run. See the QA report for the exact scope.
+> **2.0.2 static-deployment hotfix**, based on the 2.0.1 handoff and inspected upstream `4660cf661aeb6a1345e5d16634791f8f13affe77`. This ZIP has not been pushed to the remote repository. The screenshots are isolated UI renders, not a hosted-renderer certificate.
+
+## Upgrading an existing site
+
+Read [the upgrade guide](UPGRADE-KR.md) before overlaying this ZIP. An overlay does not remove obsolete 1.x files. Run `npm run migrate` (dry-run), then `npm run migrate -- --apply` and `npm run check:all`. The migration backs up only recognized, unchanged legacy files outside the web root. It never clears browser drafts.
+
+This release adds **versioned CSS and complete local module/Worker URLs**, intrinsic SVG sizes, an independent startup warning and a read-only deployment verifier. The 2.0.1 dark, readable, square-edged UI and document styling are retained. GitHub Pages can still publish directly from **main / root** without a build or backend. See [deployment instructions](docs/deployment.md).
+
+```sh
+npm run check:deployment -- https://jtech-co.github.io/RMC/
+```
+
+The verifier checks published HTTP responses against `release.json`; it does not execute the app or validate third-party CDN libraries. Default CDN mode and the previous dependency pins are unchanged.
 
 ## UI readability update (2.0.1)
 

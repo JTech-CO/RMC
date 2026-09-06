@@ -1,11 +1,11 @@
-import { runtimeUrl } from './dependencies.js';
+import { runtimeUrl } from './dependencies.js?v=2.0.2';
 
 export class Parser {
   constructor() { this.worker = null; this.pending = new Map(); this.sequence = 0; this.ready = null; }
   init() {
     if (this.ready) return this.ready;
     this.ready = new Promise((resolve, reject) => {
-      const worker = new Worker(new URL('./markdown.worker.js', import.meta.url));
+      const worker = new Worker(new URL('./markdown.worker.js?v=2.0.2', import.meta.url));
       this.worker = worker;
       const timer = setTimeout(() => { reject(new Error('Markdown parser could not load. Check the network.')); this.dispose(); }, 12000);
       worker.addEventListener('message', ({ data }) => {

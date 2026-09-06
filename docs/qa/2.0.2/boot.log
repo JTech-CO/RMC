@@ -1,0 +1,10 @@
+PASS No CSS: deployment banner is visible
+PASS No CSS: message identifies missing/outdated stylesheet
+PASS No CSS: symbol definitions occupy zero height
+PASS No CSS: regular icons keep a 20px intrinsic width
+PASS No CSS: warning protects draft data
+PASS Current CSS, failed module: banner is visible
+PASS Current CSS, failed module: specific module startup message
+PASS Current CSS and startup marker: no false warning
+PASS Current CSS: application still uses flex layout
+PASS Old stylesheet marker is rejected even after application startup

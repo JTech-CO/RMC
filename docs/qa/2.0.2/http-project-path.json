@@ -1,0 +1,155 @@
+{
+  "base": "http://127.0.0.1:42001/RMC/",
+  "expectedVersion": "2.0.2",
+  "ok": true,
+  "results": [
+    {
+      "path": "index.html?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/html",
+      "bytes": 16679
+    },
+    {
+      "path": "release.json?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "application/json",
+      "bytes": 3611
+    },
+    {
+      "path": "css/document.css?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/css",
+      "bytes": 5503
+    },
+    {
+      "path": "css/preview.css?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/css",
+      "bytes": 2586
+    },
+    {
+      "path": "css/editor.css?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/css",
+      "bytes": 3216
+    },
+    {
+      "path": "css/styles.css?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/css",
+      "bytes": 16174
+    },
+    {
+      "path": "js/boot.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 1372
+    },
+    {
+      "path": "js/config.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 1467
+    },
+    {
+      "path": "js/dependencies.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 1248
+    },
+    {
+      "path": "js/editor.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 2180
+    },
+    {
+      "path": "js/export.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 2225
+    },
+    {
+      "path": "js/main.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 17579
+    },
+    {
+      "path": "js/markdown.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 3574
+    },
+    {
+      "path": "js/markdown.worker.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 1108
+    },
+    {
+      "path": "js/parser.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 2059
+    },
+    {
+      "path": "js/runtime-urls.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 483
+    },
+    {
+      "path": "js/scroll-sync.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 879
+    },
+    {
+      "path": "js/storage.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 3291
+    },
+    {
+      "path": "js/ui.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 3904
+    },
+    {
+      "path": "js/utils.js?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "text/javascript",
+      "bytes": 1925
+    },
+    {
+      "path": "assets/favicon.svg?v=2.0.2",
+      "ok": true,
+      "status": 200,
+      "type": "image/svg+xml",
+      "bytes": 294
+    }
+  ],
+  "scope": "HTTP status, MIME, release references and SHA-256 bytes. Not browser execution, layout or CDN dependency validation."
+}

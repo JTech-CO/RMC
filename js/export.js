@@ -1,7 +1,7 @@
-import { escapeHtml, safeFilename } from './utils.js';
+import { escapeHtml, safeFilename } from './utils.js?v=2.0.2';
 let stylesPromise;
 export function loadDocumentStyles() {
-  return stylesPromise ??= fetch(new URL('../css/document.css', import.meta.url))
+  return stylesPromise ??= fetch(new URL('../css/document.css?v=2.0.2', import.meta.url))
     .then(response => { if (!response.ok) throw new Error('Document styles could not load.'); return response.text(); })
     .catch(error => { stylesPromise = null; throw error; });
 }

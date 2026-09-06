@@ -1,0 +1,119 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "path": "css/document.css",
+      "url": "css/document.css?v=2.0.2",
+      "bytes": 5503,
+      "sha256": "18f7e3c9ed12a3756c9cb2d2f446bae2e40a3754f100720cffffc6880b1c553d"
+    },
+    {
+      "path": "css/editor.css",
+      "url": "css/editor.css?v=2.0.2",
+      "bytes": 3216,
+      "sha256": "870b7a6453d5bfc9dc68abeac13f677b0913237ad18d860ae41e0b97bfa0675d"
+    },
+    {
+      "path": "css/preview.css",
+      "url": "css/preview.css?v=2.0.2",
+      "bytes": 2586,
+      "sha256": "27aeedfb4e06c2155b0f77e613620c721246521c1a5ae9849c46503a103219ae"
+    },
+    {
+      "path": "css/styles.css",
+      "url": "css/styles.css?v=2.0.2",
+      "bytes": 16174,
+      "sha256": "7f7ab4dfd5e9547799d497c17429651613341ccf64efc27c16001b16f8ac7ede"
+    },
+    {
+      "path": "js/boot.js",
+      "url": "js/boot.js?v=2.0.2",
+      "bytes": 1372,
+      "sha256": "c41564e145953aae34f3f0e63ae5023047ae5c098f0f3f1e454467c211adc121"
+    },
+    {
+      "path": "js/config.js",
+      "url": "js/config.js?v=2.0.2",
+      "bytes": 1467,
+      "sha256": "816793751964adf41a691c82fc69aa583214807b3c65fa4014e78d8204b28ef6"
+    },
+    {
+      "path": "js/dependencies.js",
+      "url": "js/dependencies.js?v=2.0.2",
+      "bytes": 1248,
+      "sha256": "1bcfc4e6a1006c7e4dfcc3659e52d2269936dddd8315dbacca5fa1a3627522fd"
+    },
+    {
+      "path": "js/editor.js",
+      "url": "js/editor.js?v=2.0.2",
+      "bytes": 2180,
+      "sha256": "e91de0f7d4d4a985fdb5b9e0df907c57b4dd3fe7b01e7d7fb7860a703d5cf565"
+    },
+    {
+      "path": "js/export.js",
+      "url": "js/export.js?v=2.0.2",
+      "bytes": 2225,
+      "sha256": "b5fd6e9c7710c111a8a3eb8c632fede202463330f23be6a5d7a954e684502564"
+    },
+    {
+      "path": "js/main.js",
+      "url": "js/main.js?v=2.0.2",
+      "bytes": 17579,
+      "sha256": "16352fff362f29642a2fe7a780531a10c93584c6583a0f41529ae1ee9fbb292b"
+    },
+    {
+      "path": "js/markdown.js",
+      "url": "js/markdown.js?v=2.0.2",
+      "bytes": 3574,
+      "sha256": "c59ba82d4e12615eaa9dd68c8e94131356a92a900f2e4a00893b8f5c522a799d"
+    },
+    {
+      "path": "js/markdown.worker.js",
+      "url": "js/markdown.worker.js?v=2.0.2",
+      "bytes": 1108,
+      "sha256": "c7281df0abd49c9eba2241206dff65971990428e1766ebe40cd20f6c70a79761"
+    },
+    {
+      "path": "js/parser.js",
+      "url": "js/parser.js?v=2.0.2",
+      "bytes": 2059,
+      "sha256": "ef8ac78089ac3ae20261b824fc65d181ad6ad52e920a2e61d40d0ed392692db3"
+    },
+    {
+      "path": "js/runtime-urls.js",
+      "url": "js/runtime-urls.js?v=2.0.2",
+      "bytes": 483,
+      "sha256": "f63815e3e3e14ea1cd1a8324d95f21747e1553ed434050180aa5fd7b7e9e94e5"
+    },
+    {
+      "path": "js/scroll-sync.js",
+      "url": "js/scroll-sync.js?v=2.0.2",
+      "bytes": 879,
+      "sha256": "1c487feb5ef1ee4892cf4b59fae2a4a732e1109adf9cfbf65286d5d74bb7817d"
+    },
+    {
+      "path": "js/storage.js",
+      "url": "js/storage.js?v=2.0.2",
+      "bytes": 3291,
+      "sha256": "4267c9c19ef23d8912f46ceac713b2a27314ee4b63ddb68fa3e0143eb9068aa7"
+    },
+    {
+      "path": "js/ui.js",
+      "url": "js/ui.js?v=2.0.2",
+      "bytes": 3904,
+      "sha256": "d45754a9a8bbcf3fb1e46d72a6f6a0a5922e8a90a9169d600e27159c265cba26"
+    },
+    {
+      "path": "js/utils.js",
+      "url": "js/utils.js?v=2.0.2",
+      "bytes": 1925,
+      "sha256": "22ce95c7fce87b8946870ce98d91b2bd0cf94edc535f72af8d800cb316c61ec3"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "url": "assets/favicon.svg?v=2.0.2",
+      "bytes": 294,
+      "sha256": "22ed667483eaa4e71750abb85baa1e3ca07982979b73c5eb7d0cb0ac747da1c6"
+    }
+  ]
+}

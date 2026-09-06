@@ -1,4 +1,4 @@
-import { RUNTIME_URLS } from './runtime-urls.js';
+import { RUNTIME_URLS } from './runtime-urls.js?v=2.0.2';
 export const runtimeUrl = key => new URL(RUNTIME_URLS[key], import.meta.url).href;
 
 function loadScript(key, globalName, timeout = 12000) {

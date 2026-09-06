@@ -1,4 +1,4 @@
-import { isSafeLink } from './utils.js';
+import { isSafeLink } from './utils.js?v=2.0.2';
 const TAGS = ['p','br','hr','h1','h2','h3','h4','h5','h6','strong','em','b','i','s','del','blockquote',
   'ul','ol','li','pre','code','a','img','table','thead','tbody','tfoot','tr','th','td','input',
   'details','summary','kbd','samp','sub','sup','mark','span','div','dl','dt','dd'];

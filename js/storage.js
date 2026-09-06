@@ -1,5 +1,5 @@
-import { STORAGE_KEY, BACKUP_KEY, LEGACY_KEY, LEGACY_BACKUP_KEY, SETTINGS_KEY } from './config.js';
-import { record, validDocument } from './utils.js';
+import { STORAGE_KEY, BACKUP_KEY, LEGACY_KEY, LEGACY_BACKUP_KEY, SETTINGS_KEY } from './config.js?v=2.0.2';
+import { record, validDocument } from './utils.js?v=2.0.2';
 
 // The storage provider is injected so denial/quota/corruption can be tested without a browser.
 export class DraftStore {

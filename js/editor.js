@@ -1,4 +1,4 @@
-import { textStats } from './utils.js';
+import { textStats } from './utils.js?v=2.0.2';
 const FORMATS = {
   bold: ['**', '**', 'bold text'], italic: ['*', '*', 'italic text'],
   link: ['[', '](https://example.com)', 'link text'], code: ['`', '`', 'code'],

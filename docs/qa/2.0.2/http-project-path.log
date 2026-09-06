@@ -1,0 +1,25 @@
+Actual local HTTP CLI execution at a /RMC/ project prefix. This is not the public GitHub Pages site.
+PASS index.html?v=2.0.2
+PASS release.json?v=2.0.2
+PASS css/document.css?v=2.0.2
+PASS css/preview.css?v=2.0.2
+PASS css/editor.css?v=2.0.2
+PASS css/styles.css?v=2.0.2
+PASS js/boot.js?v=2.0.2
+PASS js/config.js?v=2.0.2
+PASS js/dependencies.js?v=2.0.2
+PASS js/editor.js?v=2.0.2
+PASS js/export.js?v=2.0.2
+PASS js/main.js?v=2.0.2
+PASS js/markdown.js?v=2.0.2
+PASS js/markdown.worker.js?v=2.0.2
+PASS js/parser.js?v=2.0.2
+PASS js/runtime-urls.js?v=2.0.2
+PASS js/scroll-sync.js?v=2.0.2
+PASS js/storage.js?v=2.0.2
+PASS js/ui.js?v=2.0.2
+PASS js/utils.js?v=2.0.2
+PASS assets/favicon.svg?v=2.0.2
+
+21/21 HTTP deployment checks passed.
+HTTP status, MIME, release references and SHA-256 bytes. Not browser execution, layout or CDN dependency validation.

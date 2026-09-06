@@ -1,0 +1,97 @@
+PASS Document/export stylesheet is byte-identical to 2.0.0
+PASS Default Markdown content is unchanged
+PASS Desktop UI body uses a 16px base
+PASS Main controls are 16px; auxiliary chrome is at least 14px
+PASS All application frame/control corners are square
+PASS Control icons use square-ended/miter strokes
+PASS Disabled controls remain legible, without opacity fading
+PASS UI contrast text/panel >= 7:1
+PASS UI contrast text/toolbar >= 7:1
+PASS UI contrast text/surface >= 7:1
+PASS UI contrast text/active >= 7:1
+PASS UI contrast muted/panel >= 7:1
+PASS UI contrast muted/toolbar >= 7:1
+PASS UI contrast muted/surface >= 7:1
+PASS UI contrast muted/active >= 7:1
+PASS UI contrast subtle/panel >= 7:1
+PASS UI contrast subtle/toolbar >= 7:1
+PASS UI contrast subtle/surface >= 7:1
+PASS UI contrast subtle/active >= 7:1
+PASS No horizontal page overflow 1920x1080 / preview
+PASS Visible workspace retains editing area 1920x1080 / preview
+PASS No horizontal page overflow 1440x1000 / preview
+PASS Visible workspace retains editing area 1440x1000 / preview
+PASS Document and canvas computed typography/colors unchanged at 1440px
+PASS No horizontal page overflow 1024x768 / preview
+PASS Visible workspace retains editing area 1024x768 / preview
+PASS No horizontal page overflow 930x700 / preview
+PASS Visible workspace retains editing area 930x700 / preview
+PASS No horizontal page overflow 800x700 / preview
+PASS Visible workspace retains editing area 800x700 / preview
+PASS No horizontal page overflow 768x700 / preview
+PASS Visible workspace retains editing area 768x700 / preview
+PASS No horizontal page overflow 767x844 / editor
+PASS Visible workspace retains editing area 767x844 / editor
+PASS No horizontal page overflow 767x844 / preview
+PASS Visible workspace retains editing area 767x844 / preview
+PASS No horizontal page overflow 767x844 / source
+PASS Visible workspace retains editing area 767x844 / source
+PASS No horizontal page overflow 430x932 / editor
+PASS Visible workspace retains editing area 430x932 / editor
+PASS No horizontal page overflow 430x932 / preview
+PASS Visible workspace retains editing area 430x932 / preview
+PASS No horizontal page overflow 430x932 / source
+PASS Visible workspace retains editing area 430x932 / source
+PASS No horizontal page overflow 390x844 / editor
+PASS Visible workspace retains editing area 390x844 / editor
+PASS No horizontal page overflow 390x844 / preview
+PASS Visible workspace retains editing area 390x844 / preview
+PASS No horizontal page overflow 390x844 / source
+PASS Visible workspace retains editing area 390x844 / source
+PASS Document and canvas computed typography/colors unchanged at 390px
+PASS No horizontal page overflow 360x800 / editor
+PASS Visible workspace retains editing area 360x800 / editor
+PASS No horizontal page overflow 360x800 / preview
+PASS Visible workspace retains editing area 360x800 / preview
+PASS No horizontal page overflow 360x800 / source
+PASS Visible workspace retains editing area 360x800 / source
+PASS No horizontal page overflow 320x568 / editor
+PASS Visible workspace retains editing area 320x568 / editor
+PASS No horizontal page overflow 320x568 / preview
+PASS Visible workspace retains editing area 320x568 / preview
+PASS No horizontal page overflow 320x568 / source
+PASS Visible workspace retains editing area 320x568 / source
+PASS No horizontal page overflow 720x500 / editor
+PASS Visible workspace retains editing area 720x500 / editor
+PASS No horizontal page overflow 720x500 / preview
+PASS Visible workspace retains editing area 720x500 / preview
+PASS No horizontal page overflow 720x500 / source
+PASS Visible workspace retains editing area 720x500 / source
+PASS No horizontal page overflow 360x400 / editor
+PASS Visible workspace retains editing area 360x400 / editor
+PASS No horizontal page overflow 360x400 / preview
+PASS Visible workspace retains editing area 360x400 / preview
+PASS No horizontal page overflow 360x400 / source
+PASS Visible workspace retains editing area 360x400 / source
+PASS Desktop End skips the hidden mobile Help item
+PASS Escape restores File trigger focus
+PASS Existing keyboard splitter still adjusts width
+PASS Existing splitter Home reset remains available
+PASS Settings dialog uses 16px body text and square border
+PASS File menu is fully inside desktop viewport
+PASS Desktop 25% split does not overflow the page
+PASS Desktop 25% split tab controls fit panel
+PASS Desktop 75% split does not overflow the page
+PASS Desktop 75% split tab controls fit panel
+PASS Mobile Help is reachable as the last File-menu action
+PASS Mobile Help opens the native dialog
+PASS File menu fits a 320px viewport
+PASS Edit menu fits a 320px viewport
+PASS 320px settings dialog fits without horizontal overflow
+PASS Visible error banners do not introduce horizontal overflow at 320px
+PASS User root font preference enlarges menu labels to 20px
+PASS Larger root font does not cause horizontal page overflow
+PASS 320px viewport supports a larger 20px root font without horizontal overflow
+PASS File menu fits at 320px with a 20px root font
+PASS Edit menu fits at 320px with a 20px root font
+96/96 UI-layout checks passed.
