@@ -1,83 +1,55 @@
-# Deployment and Dependency Notes
+# Deployment and upgrade
 
-R.M.C. is a serverless static web app. The production entry point is `index.html`, with local CSS in `css/` and ES modules in `js/`.
+## Replacing the old project
 
-## Run Locally
+This is a **complete replacement source tree**, not a patch to append below the old files. Back up the repository working tree and export important in-browser Markdown first. Copy the contents of `RMC/` into the repository root while preserving the repository's `.git/` directory and any separately managed domain configuration such as `CNAME`. The archive does not contain a `.git/` directory or change the remote repository.
 
-Use an HTTP server instead of opening `index.html` directly from the filesystem. The app uses ES module imports, and browser behavior for module loading is more reliable from `http://localhost` than from `file://`.
+Remove obsolete app assets after reviewing the diff: old `css/scrollbar.css`, `js/autoSave.js`, `js/preview.js`, `js/sourceFormatter.js`, `js/scrollSync.js`, `scripts/check.js`, `scripts/e2e-smoke.js`, and old deployment dependencies are no longer referenced. Their replacements use the structure described in README. Keeping unused old assets does not activate them, but it obscures maintenance and audits.
+
+The original legacy draft keys are left intact. The first new-version visit migrates an existing raw draft only when no v2 record exists, on the same origin. Rolling back to v1 will read the old legacy copy, not later v2 edits. Export the current v2 document before rolling back; do not assume bidirectional schema synchronization.
+
+## Local preflight
 
 ```bash
-npm install
+npm ci
+npm run check:all
 npm run dev
 ```
 
-Alternative commands:
+Open the localhost URL printed by the server. Verify a Korean document, a multiline code block, a table, new/restore, file open, MD/HTML exports, clipboard permission denial and a narrow viewport. Do not treat core tests alone as a completed browser release gate.
+
+For locally hosted dependencies and genuine browser checks:
 
 ```bash
-npm run serve
-npm run preview
+npm run vendor
+npm run vendor:check
+python -m pip install -r tests/requirements.txt
+python -m playwright install chromium
+npm run test:browser
 ```
 
-- `dev`: runs `live-server` on port 8000 and opens `/index.html`.
-- `serve`: runs `http-server` on port 8000, disables cache, and opens `/index.html`.
-- `preview`: runs `http-server` on port 8000 with cache disabled and no automatic browser open.
+The vendoring step requires outbound HTTPS and fails explicitly on unavailable/wrong-version files. Review `vendor/manifest.json`, licenses and `js/runtime-urls.js`. This authoring handoff did not complete that network download. CI is supplied to run it in a normal network-enabled environment.
 
-Before deployment, run:
+## GitHub Pages: branch deployment
 
-```bash
-npm run check
-```
+Place `index.html` at the repository root along with `css/`, `js/`, `assets/` and optionally `vendor/`. In the repository's Pages settings choose branch deployment and the root directory of the desired branch. There is no build output directory. Retain `.nojekyll`. All app paths are relative and support a project path such as `/RMC/`.
 
-This validates JSON files, required project files, local HTML references, JavaScript module syntax, import targets, documentation links, and the current UI wiring contract.
+In CDN mode those folders are enough to serve the app, but client access to the pinned library hosts is required. In local mode deploy the complete `vendor/` directory and the corresponding modified `runtime-urls.js` together. A partial upload will break loading. Test the final published URL because hosting MIME, CSP and base-path behavior is outside the unit suite.
 
-For browser-level smoke checks, run:
+## GitHub Pages: optional manual workflow
 
-```bash
-npm run check:e2e
-```
+`.github/workflows/pages.yml` runs **only via workflow_dispatch**. Select GitHub Actions as the Pages source, then manually run “Deploy Pages (manual)”. It vendors dependencies, verifies hashes, packages only runtime assets, and deploys them. It does not publish on every push by default. Required Pages permissions and environment configuration depend on repository settings. The workflow has been supplied, not executed during this handoff.
 
-Use `npm run check:all` to run both static and browser checks. On Windows PowerShell, use `npm.cmd run check`, `npm.cmd run check:e2e`, or `npm.cmd run check:all` if `npm.ps1` is blocked by the execution policy.
+`.github/workflows/ci.yml` is separate: it checks pushes/pull requests, vendors the renderer and runs the real browser suite. A failing CDN download or browser test fails CI instead of using compatibility fixtures.
 
-## Static Deployment
+## Other static hosts
 
-Deploy these files and folders:
+Publish `index.html`, `.nojekyll`, `assets/`, `css/`, `js/` and, in local mode, `vendor/`. No backend, secrets or environment variables are required in the deployed application. Serve JavaScript with a JavaScript MIME type and CSS as `text/css`; enable HTTPS. Do not publish local QA output, test fixtures or development environment files as runtime assets.
 
-- `index.html`
-- `css/`
-- `js/`
-- `README.md` and `docs/` if repository documentation should be visible
+The HTML includes a meta CSP. Add deployment headers where supported, including `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` and `Content-Security-Policy: frame-ancestors 'none'` to complement it. The latter cannot be provided by a meta tag. A host-specific CSP must still allow the configured library locations, same-origin workers and document style loading. Test rather than blindly replacing the existing policy.
 
-Do not deploy `node_modules/`. It is only needed for local development servers.
+## Known operational boundaries
 
-For GitHub Pages:
+There is no service worker, cache invalidation daemon, authentication or server-side saving. Browser-local drafts are not a data backup system. In particular, GitHub project paths on the same hostname share an origin; other scripts hosted at that origin are not isolated from localStorage. Use a separate origin for sensitive independent applications.
 
-1. Push the repository.
-2. Open repository Settings.
-3. Go to Pages.
-4. Select the branch and root folder containing `index.html`.
-5. Run `npm run check:all` locally before publishing changes.
-6. Wait for Pages to publish the site.
-
-## CDN Dependencies
-
-Runtime libraries are loaded from CDNs in `index.html`:
-
-- Tailwind CSS CDN with typography plugin
-- marked 9.1.2
-- DOMPurify 3.0.6
-- Highlight.js 11.9.0
-- Font Awesome 6.4.0
-- Google Fonts: JetBrains Mono and Noto Sans KR
-
-This keeps the app serverless and build-free, but it also means the browser needs network access for first load styling, fonts, icons, markdown parsing, sanitization, and syntax highlighting. A future hardening step can vendor or bundle these dependencies if offline support or stronger supply-chain control becomes a requirement.
-
-## Source of Truth
-
-- `index.html` is the current app shell and deployment entry point.
-- `js/markdown.js` owns Markdown to sanitized HTML conversion.
-- `js/sourceFormatter.js` owns formatted HTML Source output.
-- `js/main.js` owns app state and UI event wiring.
-
-## Cache Notes
-
-During local review, use `npm run serve` or `npm run preview` because both pass `-c-1` to `http-server`, disabling cache. This avoids stale JS modules while refactoring.
+The optional dev server binds to 127.0.0.1. Do not expose it as an internet-facing application server. For production use the static host's normal infrastructure. Clipboard APIs may depend on secure context and user permissions; a failure is surfaced, not reported as a successful copy. Test Safari, Firefox, real touch keyboards and at least one screen reader before announcing broad browser/accessibility support.

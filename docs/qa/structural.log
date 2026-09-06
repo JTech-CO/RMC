@@ -1,0 +1,5 @@
+
+> real-time-markdown-converter@2.0.0 check
+> node scripts/check.mjs
+
+70/70 structural checks passed.

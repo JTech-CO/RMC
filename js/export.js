@@ -1,75 +1,31 @@
-import { showToast } from './ui.js';
-
-export function downloadHTML(htmlContent) {
-    const bodyContent = htmlContent ?? '';
-    const content = `<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<style>
-    body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; color: #111; }
-    pre { background: #f4f4f4; padding: 1rem; border-radius: 0; overflow-x: auto; }
-    blockquote { border-left: 4px solid #000; margin: 0; padding-left: 1rem; color: #555; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-</style>
-</head>
-<body>
-${bodyContent}
-</body>
-</html>`;
-    downloadFile('document.html', content, 'text/html');
+import { escapeHtml, safeFilename } from './utils.js';
+let stylesPromise;
+export function loadDocumentStyles() {
+  return stylesPromise ??= fetch(new URL('../css/document.css', import.meta.url))
+    .then(response => { if (!response.ok) throw new Error('Document styles could not load.'); return response.text(); })
+    .catch(error => { stylesPromise = null; throw error; });
 }
-
-export function downloadMarkdown(markdownText) {
-    downloadFile('document.md', markdownText ?? '', 'text/markdown');
+export function createHtmlDocument(html, name, styles, images = false) {
+  const title = escapeHtml(safeFilename(name).replace(/\.md$/, ''));
+  return `<!doctype html>\n<html lang="en"><head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="referrer" content="no-referrer">\n<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:${images ? ' https:' : ''}; base-uri 'none'; form-action 'none'">\n<title>${title}</title>\n<style>\n${styles.replace(/<\/style/gi, '<\\/style')}\n</style>\n</head>\n<body class="export-document"><article class="markdown-body">${html}</article></body>\n</html>\n`;
 }
-
-function downloadFile(filename, content, type) {
-    const blob = new Blob([content], { type: type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast(`Exported: ${filename}`);
+export function downloadFile(name, content, type) {
+  const url = URL.createObjectURL(new Blob([content], { type: `${type};charset=utf-8` }));
+  const link = document.createElement('a');
+  link.href = url; link.download = name;
+  document.body.append(link);
+  try { link.click(); } finally { link.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000); }
 }
-
-export async function copyToClipboard(content, successMessage = 'Copied to clipboard') {
-    const copyContent = content ?? '';
-    
-    if (navigator.clipboard && window.isSecureContext) {
-        try {
-            await navigator.clipboard.writeText(copyContent);
-            showToast(successMessage);
-            return true;
-        } catch (err) {
-            console.warn('Clipboard API failed, falling back to textarea copy.', err);
-        }
-    }
-
-    const textarea = document.createElement('textarea');
-    textarea.value = copyContent;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'fixed';
-    textarea.style.top = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.select();
-    
-    try {
-        document.execCommand('copy');
-        showToast(successMessage);
-        return true;
-    } catch (err) {
-        console.error('Copy failed', err);
-        showToast("Copy failed: Permission denied");
-        return false;
-    } finally {
-        document.body.removeChild(textarea);
-    }
+export async function copyText(text) {
+  if (navigator.clipboard && globalThis.isSecureContext) {
+    try { await navigator.clipboard.writeText(text); return true; } catch { /* Try the legacy clipboard path. */ }
+  }
+  const active = document.activeElement;
+  const range = active instanceof HTMLTextAreaElement ? [active.selectionStart, active.selectionEnd] : null;
+  const area = document.createElement('textarea');
+  area.value = text; area.className = 'clipboard-helper'; area.setAttribute('readonly', '');
+  document.body.append(area); area.select();
+  try { return document.execCommand('copy') === true; }
+  catch { return false; }
+  finally { area.remove(); active?.focus({ preventScroll: true }); if (range) active.setSelectionRange(...range); }
 }

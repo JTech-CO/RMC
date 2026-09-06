@@ -1,0 +1,36 @@
+PASS Sample heading rendered
+PASS Code highlighting
+PASS Desktop has no body overflow
+PASS Local draft autosave
+PASS Fenced code whitespace retained
+PASS Soft breaks preserved
+PASS HTML source is exactly preview HTML
+PASS HTML download prepared
+PASS Active HTML removed
+PASS Dangerous URL stripped
+PASS Remote images blocked
+PASS No active injected script
+PASS Only disabled task checkbox remains
+PASS Native confirmation opens and focuses cancel
+PASS Cancel keeps current document
+PASS Confirmed new document remains empty
+PASS Recovery restores previous document
+PASS Menu opens from keyboard
+PASS Menu End focuses last item
+PASS Escape returns to trigger
+PASS Selection wrapping
+PASS Native undo for toolbar insertion
+PASS Unknown code language is safe text
+PASS Keyboard splitter resizes
+PASS Splitter Home resets
+PASS Clipboard denial feedback
+PASS Oversized preview fails closed
+PASS Markdown export remains enabled on renderer failure
+PASS No uncaught browser errors
+PASS Mobile editor initially visible
+PASS Mobile preview switches correctly
+PASS Mobile no horizontal body overflow
+PASS Mobile HTML view switches correctly
+PASS Legacy empty draft migration in app
+PASS Storage event pauses autosave without replacing text
+TOTAL 35

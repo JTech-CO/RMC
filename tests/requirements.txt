@@ -1,0 +1,2 @@
+# Test-tool pin used when authoring this suite; not a claim of the latest release.
+playwright==1.57.0

@@ -1,0 +1,356 @@
+
+> real-time-markdown-converter@2.0.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: Filename safety: "hello.md"
+ok 1 - Filename safety: "hello.md"
+  ---
+  duration_ms: 2.017905
+  type: 'test'
+  ...
+# Subtest: Filename safety: "a/b:test.html"
+ok 2 - Filename safety: "a/b:test.html"
+  ---
+  duration_ms: 0.18615
+  type: 'test'
+  ...
+# Subtest: Filename safety: "안녕하세요.md"
+ok 3 - Filename safety: "안녕하세요.md"
+  ---
+  duration_ms: 0.189275
+  type: 'test'
+  ...
+# Subtest: Filename safety: ""
+ok 4 - Filename safety: ""
+  ---
+  duration_ms: 0.072489
+  type: 'test'
+  ...
+# Subtest: Filename safety: "CON"
+ok 5 - Filename safety: "CON"
+  ---
+  duration_ms: 0.088192
+  type: 'test'
+  ...
+# Subtest: Filename safety: "LPT1.txt"
+ok 6 - Filename safety: "LPT1.txt"
+  ---
+  duration_ms: 0.061632
+  type: 'test'
+  ...
+# Subtest: Filename safety: "..."
+ok 7 - Filename safety: "..."
+  ---
+  duration_ms: 0.105509
+  type: 'test'
+  ...
+# Subtest: HTML filename extension
+ok 8 - HTML filename extension
+  ---
+  duration_ms: 0.079159
+  type: 'test'
+  ...
+# Subtest: HTML escaping
+ok 9 - HTML escaping
+  ---
+  duration_ms: 0.23268
+  type: 'test'
+  ...
+# Subtest: BOM + Windows/Mac newline normalization
+ok 10 - BOM + Windows/Mac newline normalization
+  ---
+  duration_ms: 0.369265
+  type: 'test'
+  ...
+# Subtest: Unicode code-point statistics
+ok 11 - Unicode code-point statistics
+  ---
+  duration_ms: 0.668125
+  type: 'test'
+  ...
+# Subtest: Empty document statistics
+ok 12 - Empty document statistics
+  ---
+  duration_ms: 0.088223
+  type: 'test'
+  ...
+# Subtest: Cursor after newline
+ok 13 - Cursor after newline
+  ---
+  duration_ms: 0.065629
+  type: 'test'
+  ...
+# Subtest: Scroll range zero
+ok 14 - Scroll range zero
+  ---
+  duration_ms: 0.109926
+  type: 'test'
+  ...
+# Subtest: Scroll clamped to valid range
+ok 15 - Scroll clamped to valid range
+  ---
+  duration_ms: 0.058608
+  type: 'test'
+  ...
+# Subtest: Scroll normal ratio
+ok 16 - Scroll normal ratio
+  ---
+  duration_ms: 0.051548
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "javascript:alert(1)"
+ok 17 - Reject dangerous/ambiguous URL: "javascript:alert(1)"
+  ---
+  duration_ms: 0.095244
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "data:text/html,test"
+ok 18 - Reject dangerous/ambiguous URL: "data:text/html,test"
+  ---
+  duration_ms: 0.066751
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "//example.com"
+ok 19 - Reject dangerous/ambiguous URL: "//example.com"
+  ---
+  duration_ms: 0.033
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "/relative/path"
+ok 20 - Reject dangerous/ambiguous URL: "/relative/path"
+  ---
+  duration_ms: 0.028052
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "java\\nscript:test"
+ok 21 - Reject dangerous/ambiguous URL: "java\\nscript:test"
+  ---
+  duration_ms: 0.02631
+  type: 'test'
+  ...
+# Subtest: Reject dangerous/ambiguous URL: "https://a.test/ bad"
+ok 22 - Reject dangerous/ambiguous URL: "https://a.test/ bad"
+  ---
+  duration_ms: 0.04654
+  type: 'test'
+  ...
+# Subtest: Allow explicit URL: https://example.com
+ok 23 - Allow explicit URL: https://example.com
+  ---
+  duration_ms: 0.073801
+  type: 'test'
+  ...
+# Subtest: Allow explicit URL: http://localhost:8000
+ok 24 - Allow explicit URL: http://localhost:8000
+  ---
+  duration_ms: 0.037467
+  type: 'test'
+  ...
+# Subtest: Allow explicit URL: mailto:a@example.com
+ok 25 - Allow explicit URL: mailto:a@example.com
+  ---
+  duration_ms: 0.035313
+  type: 'test'
+  ...
+# Subtest: Allow explicit URL: \#heading
+ok 26 - Allow explicit URL: \#heading
+  ---
+  duration_ms: 0.036314
+  type: 'test'
+  ...
+# Subtest: Absent draft differs from empty draft
+ok 27 - Absent draft differs from empty draft
+  ---
+  duration_ms: 2.538138
+  type: 'test'
+  ...
+# Subtest: Legacy empty draft does not become sample text
+ok 28 - Legacy empty draft does not become sample text
+  ---
+  duration_ms: 0.130917
+  type: 'test'
+  ...
+# Subtest: Legacy content preserved and migrated non-destructively
+ok 29 - Legacy content preserved and migrated non-destructively
+  ---
+  duration_ms: 0.159971
+  type: 'test'
+  ...
+# Subtest: Malformed modern draft is never treated as no draft
+ok 30 - Malformed modern draft is never treated as no draft
+  ---
+  duration_ms: 0.172159
+  type: 'test'
+  ...
+# Subtest: Unknown schema is rejected
+ok 31 - Unknown schema is rejected
+  ---
+  duration_ms: 0.166891
+  type: 'test'
+  ...
+# Subtest: Storage permission denial is reported
+ok 32 - Storage permission denial is reported
+  ---
+  duration_ms: 0.15955
+  type: 'test'
+  ...
+# Subtest: Quota failure does not claim success or update baseline
+ok 33 - Quota failure does not claim success or update baseline
+  ---
+  duration_ms: 0.123205
+  type: 'test'
+  ...
+# Subtest: Cross-tab conflict does not overwrite existing saved draft
+ok 34 - Cross-tab conflict does not overwrite existing saved draft
+  ---
+  duration_ms: 0.115604
+  type: 'test'
+  ...
+# Subtest: Loading latest baseline enables explicit conflict resolution
+ok 35 - Loading latest baseline enables explicit conflict resolution
+  ---
+  duration_ms: 0.119319
+  type: 'test'
+  ...
+# Subtest: Invalid backup data rejected
+ok 36 - Invalid backup data rejected
+  ---
+  duration_ms: 0.14655
+  type: 'test'
+  ...
+# Subtest: Empty backup is valid
+ok 37 - Empty backup is valid
+  ---
+  duration_ms: 0.134633
+  type: 'test'
+  ...
+# Subtest: Legacy backup accepted without deleting original
+ok 38 - Legacy backup accepted without deleting original
+  ---
+  duration_ms: 0.107682
+  type: 'test'
+  ...
+# Subtest: No backup is an explicit null
+ok 39 - No backup is an explicit null
+  ---
+  duration_ms: 0.060391
+  type: 'test'
+  ...
+# Subtest: Settings default to privacy-safe images and original soft breaks
+ok 40 - Settings default to privacy-safe images and original soft breaks
+  ---
+  duration_ms: 0.096445
+  type: 'test'
+  ...
+# Subtest: Settings storage failure is observable
+ok 41 - Settings storage failure is observable
+  ---
+  duration_ms: 0.0794
+  type: 'test'
+  ...
+# Subtest: Selected bold replacement
+ok 42 - Selected bold replacement
+  ---
+  duration_ms: 0.130897
+  type: 'test'
+  ...
+# Subtest: Empty-selection placeholder
+ok 43 - Empty-selection placeholder
+  ---
+  duration_ms: 0.065158
+  type: 'test'
+  ...
+# Subtest: Code block fence safely encloses existing triple backticks
+ok 44 - Code block fence safely encloses existing triple backticks
+  ---
+  duration_ms: 0.193231
+  type: 'test'
+  ...
+# Subtest: Block insertion is separated from adjacent text
+ok 45 - Block insertion is separated from adjacent text
+  ---
+  duration_ms: 0.065329
+  type: 'test'
+  ...
+# Subtest: Export contains no runtime script or remote fonts
+ok 46 - Export contains no runtime script or remote fonts
+  ---
+  duration_ms: 0.216526
+  type: 'test'
+  ...
+# Subtest: Export image policy is opt-in
+ok 47 - Export image policy is opt-in
+  ---
+  duration_ms: 0.404348
+  type: 'test'
+  ...
+# Subtest: Debounce only runs the latest call
+ok 48 - Debounce only runs the latest call
+  ---
+  duration_ms: 25.613864
+  type: 'test'
+  ...
+# Subtest: Debounce can be canceled
+ok 49 - Debounce can be canceled
+  ---
+  duration_ms: 26.0441
+  type: 'test'
+  ...
+# Subtest: Clipboard fallback returning false is NOT success
+ok 50 - Clipboard fallback returning false is NOT success
+  ---
+  duration_ms: 0.365419
+  type: 'test'
+  ...
+# Subtest: HTTP: index is actually served at root
+ok 51 - HTTP: index is actually served at root
+  ---
+  duration_ms: 72.198292
+  type: 'test'
+  ...
+# Subtest: HTTP: JavaScript module MIME type
+ok 52 - HTTP: JavaScript module MIME type
+  ---
+  duration_ms: 3.546384
+  type: 'test'
+  ...
+# Subtest: HTTP: document export stylesheet is reachable
+ok 53 - HTTP: document export stylesheet is reachable
+  ---
+  duration_ms: 1.88156
+  type: 'test'
+  ...
+# Subtest: HTTP: missing files return 404
+ok 54 - HTTP: missing files return 404
+  ---
+  duration_ms: 2.830958
+  type: 'test'
+  ...
+# Subtest: HTTP: server is read-only
+ok 55 - HTTP: server is read-only
+  ---
+  duration_ms: 5.729147
+  type: 'test'
+  ...
+# Subtest: HTTP: HEAD returns metadata without body
+ok 56 - HTTP: HEAD returns metadata without body
+  ---
+  duration_ms: 4.734111
+  type: 'test'
+  ...
+# Subtest: HTTP: encoded directory traversal cannot escape project root
+ok 57 - HTTP: encoded directory traversal cannot escape project root
+  ---
+  duration_ms: 7.158196
+  type: 'test'
+  ...
+1..57
+# tests 57
+# suites 0
+# pass 57
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 189.565507
