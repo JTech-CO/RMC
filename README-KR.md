@@ -1,4 +1,4 @@
-# R.M.C. — Real-time Markdown Converter
+# R.M.C. - Real-time Markdown Converter
 
 **다크모드 Markdown 작업 공간. 계정과 백엔드 없이 작성하고, 확인하고, 내보냅니다.**
 
